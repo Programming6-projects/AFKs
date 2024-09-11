@@ -29,5 +29,10 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+
+
+    <ProjectReference Include="..\Pepsi.API\Pepsi.API.csproj" />
+    <ProjectReference Include="..\Pepsi.Core\Pepsi.Core.csproj" />
+    <ProjectReference Include="..\Pepsi.Infrastructure\Pepsi.Infrastructure.csproj" />
   </ItemGroup>
 </Project>
