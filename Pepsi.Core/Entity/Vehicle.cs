@@ -2,7 +2,7 @@ namespace Pepsi.Core.Entity;
 
 public class Vehicle
 {
-    public int id { get; init; }
-    public string vehicletype { get; init; }
-    public decimal capacity { get; init; }
+    public int Id { get; init; }
+    public string? VehicleType { get; init; }
+    public decimal Capacity { get; init; }
 }

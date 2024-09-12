@@ -8,22 +8,22 @@ public class EntityTest
     [Fact]
     public void Vehicle_Id_Should_Be_Set_Correctly()
     {
-        var vehicle = new Vehicle { id = 1 };
-        Assert.Equal(1, vehicle.id);
+        var vehicle = new Vehicle { Id = 1 };
+        Assert.Equal(1, vehicle.Id);
     }
 
     [Fact]
     public void Vehicle_VehicleType_Should_Be_Set_Correctly()
     {
-        var vehicle = new Vehicle { vehicletype = "Truck" };
-        Assert.Equal("Truck", vehicle.vehicletype);
+        var vehicle = new Vehicle { VehicleType = "Truck" };
+        Assert.Equal("Truck", vehicle.VehicleType);
     }
 
     [Fact]
     public void Vehicle_Capacity_Should_Be_Set_Correctly()
     {
-        var vehicle = new Vehicle { capacity = 1000.5m };
-        Assert.Equal(1000.5m, vehicle.capacity);
+        var vehicle = new Vehicle { Capacity = 1000.5m };
+        Assert.Equal(1000.5m, vehicle.Capacity);
     }
 
     [Fact]
