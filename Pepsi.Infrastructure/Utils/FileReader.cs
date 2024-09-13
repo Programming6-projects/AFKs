@@ -7,7 +7,9 @@ public static class FileReader
 {
     private static readonly string _filePath = Path.Combine(AppContext.BaseDirectory, "Data", "Vehicles.json");
 
+#pragma warning disable CA1002
     public static List<Vehicle>? ReadVehiclesFromJson()
+#pragma warning restore CA1002
     {
         if (!File.Exists(_filePath))
         {

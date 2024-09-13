@@ -6,185 +6,190 @@ public class EntityTest
 {
 
     [Fact]
-    public void Vehicle_Id_Should_Be_Set_Correctly()
+    public void VehicleIdShouldBeSetCorrectly()
     {
-        var vehicle = new Vehicle { Id = 1 };
+        var vehicle = new Vehicle(1, "Truck", 100000);
         Assert.Equal(1, vehicle.Id);
     }
 
     [Fact]
-    public void Vehicle_VehicleType_Should_Be_Set_Correctly()
+    public void VehicleVehicleTypeShouldBeSetCorrectly()
     {
-        var vehicle = new Vehicle { VehicleType = "Truck" };
+        var vehicle = new Vehicle(1, "Truck", 100000);
         Assert.Equal("Truck", vehicle.VehicleType);
     }
 
     [Fact]
-    public void Vehicle_Capacity_Should_Be_Set_Correctly()
+    public void VehicleCapacityShouldBeSetCorrectly()
     {
-        var vehicle = new Vehicle { Capacity = 1000.5m };
+        var vehicle = new Vehicle(1, "Truck", 1000.5m);
         Assert.Equal(1000.5m, vehicle.Capacity);
     }
 
     [Fact]
-    public void Client_Id_Should_Be_Set_Correctly()
+    public void ClientIdShouldBeSetCorrectly()
     {
-        var client = new Client { id = 1 };
-        Assert.Equal(1, client.id);
+        var client = new Client(1, "Santiago", "Av Sin Nombre", "Cochabamba");
+        Assert.Equal(1, client.Id);
     }
 
     [Fact]
-    public void Client_Name_Should_Be_Set_Correctly()
+    public void ClientNameShouldBeSetCorrectly()
     {
-        var client = new Client { name = "John Doe" };
-        Assert.Equal("John Doe", client.name);
+        var client = new Client(1, "Santiago", "Av Sin Nombre", "Cochabamba");
+        Assert.Equal("Santiago", client.Name);
     }
 
     [Fact]
-    public void Client_Address_Should_Be_Set_Correctly()
+    public void ClientAddressShouldBeSetCorrectly()
     {
-        var client = new Client { address = "123" };
-        Assert.Equal("123", client.address);
+        var client = new Client(1, "Santiago", "123", "Cochabamba");
+        Assert.Equal("123", client.Address);
     }
 
     [Fact]
-    public void Client_Region_Should_Be_Set_Correctly()
+    public void ClientRegionShouldBeSetCorrectly()
     {
-        var client = new Client { region = "South" };
-        Assert.Equal("South", client.region);
+        var client = new Client(1, "Santiago", "123", "Cochabamba");
+        Assert.Equal("Cochabamba", client.Region);
     }
 
     [Fact]
-    public void Order_Id_Should_Be_Set_Correctly()
-    {
-        var order = new Order { id = 1 };
-        Assert.Equal(1, order.id);
-    }
-
-    [Fact]
-    public void Order_ClientId_Should_Be_Set_Correctly()
-    {
-        var order = new Order { clientId = 1 };
-        Assert.Equal(1, order.clientId);
-    }
-    [Fact]
-    public void Order_VehicleId_Should_Be_Set_Correctly()
-    {
-        var order = new Order { vehicleId = 1 };
-        Assert.Equal(1, order.vehicleId);
-    }
-
-    [Fact]
-    public void Order_TotalVolume_Should_Be_Set_Correctly()
-    {
-        var order = new Order { totalVolume = 100.5m };
-        Assert.Equal(100.5m, order.totalVolume);
-    }
-
-    [Fact]
-    public void Order_OrderDate_Should_Be_Set_Correctly()
+    public void OrderIdShouldBeSetCorrectly()
     {
         var orderDate = new DateTime(2023, 10, 1);
-        var order = new Order { orderDate = orderDate };
-        Assert.Equal(orderDate, order.orderDate);
+        var order = new Order(1, 1, 1, 1000.5m, orderDate, orderDate, "Pending");
+        Assert.Equal(1, order.Id);
     }
 
     [Fact]
-    public void Order_DeliveryDate_Should_Be_Set_Correctly()
+    public void OrderClientIdShouldBeSetCorrectly()
     {
-        var deliveryDate = new DateTime(2023, 10, 5);
-        var order = new Order { deliveryDate = deliveryDate };
-        Assert.Equal(deliveryDate, order.deliveryDate);
+        var orderDate = new DateTime(2023, 10, 1);
+        var order = new Order(1, 1, 1, 1000.5m, orderDate, orderDate, "Pending");
+        Assert.Equal(1, order.ClientId);
+    }
+    [Fact]
+    public void OrderVehicleIdShouldBeSetCorrectly()
+    {
+        var orderDate = new DateTime(2023, 10, 1);
+        var order = new Order(1, 1, 1, 1000.5m, orderDate, orderDate, "Pending");
+        Assert.Equal(1, order.VehicleId);
     }
 
     [Fact]
-    public void Order_Status_Should_Be_Set_Correctly()
+    public void OrderTotalVolumeShouldBeSetCorrectly()
     {
-        var order = new Order { status = "Pending" };
-        Assert.Equal("Pending", order.status);
+        var orderDate = new DateTime(2023, 10, 1);
+        var order = new Order(1, 1, 1, 100.5m, orderDate, orderDate, "Pending");
+        Assert.Equal(100.5m, order.TotalVolume);
     }
 
     [Fact]
-    public void OrderItem_Id_Should_Be_Set_Correctly()
+    public void OrderOrderDateShouldBeSetCorrectly()
     {
-        var orderItem = new OrderItem { id = 1 };
-        Assert.Equal(1, orderItem.id);
+        var orderDate = new DateTime(2023, 10, 1);
+        var order = new Order(1, 1, 1, 1000.5m, orderDate, orderDate, "Pending");
+        Assert.Equal(orderDate, order.OrderDate);
     }
 
     [Fact]
-    public void OrderItem_OrderId_Should_Be_Set_Correctly()
+    public void OrderDeliveryDateShouldBeSetCorrectly()
     {
-        var orderItem = new OrderItem { orderId = 1 };
-        Assert.Equal(1, orderItem.orderId);
+        var orderDate = new DateTime(2023, 10, 1);
+        var order = new Order(1, 1, 1, 1000.5m, orderDate, orderDate, "Pending");
+        Assert.Equal(orderDate, order.DeliveryDate);
     }
 
     [Fact]
-    public void OrderItem_ProductId_Should_Be_Set_Correctly()
+    public void OrderStatusShouldBeSetCorrectly()
     {
-        var orderItem = new OrderItem { productId = 1 };
-        Assert.Equal(1, orderItem.productId);
+        var orderDate = new DateTime(2023, 10, 1);
+        var order = new Order(1, 1, 1, 1000.5m, orderDate, orderDate, "Pending");
+        Assert.Equal("Pending", order.Status);
     }
 
     [Fact]
-    public void OrderItem_Quantity_Should_Be_Set_Correctly()
+    public void OrderItemIdShouldBeSetCorrectly()
     {
-        var orderItem = new OrderItem { quantity = 10 };
-        Assert.Equal(10, orderItem.quantity);
+        var orderItem = new OrderItem(1, 1, 1, 10000, 1000.5m);
+        Assert.Equal(1, orderItem.Id);
     }
 
     [Fact]
-    public void OrderItem_UnitPrice_Should_Be_Set_Correctly()
+    public void OrderItemOrderIdShouldBeSetCorrectly()
     {
-        var orderItem = new OrderItem { unitPrice = 15.75m };
-        Assert.Equal(15.75m, orderItem.unitPrice);
+        var orderItem = new OrderItem(1, 1, 1, 10000, 1000.5m);
+        Assert.Equal(1, orderItem.OrderId);
     }
 
     [Fact]
-    public void Product_Id_Should_Be_Set_Correctly()
+    public void OrderItemProductIdShouldBeSetCorrectly()
     {
-        var product = new Product { id = 1 };
-        Assert.Equal(1, product.id);
+        var orderItem = new OrderItem(1, 1, 1, 10000, 1000.5m);
+        Assert.Equal(1, orderItem.ProductId);
     }
 
     [Fact]
-    public void Product_Name_Should_Be_Set_Correctly()
+    public void OrderItemQuantityShouldBeSetCorrectly()
     {
-        var product = new Product { name = "Product A" };
-        Assert.Equal("Product A", product.name);
+        var orderItem = new OrderItem(1, 1, 1, 10, 1000.5m);
+        Assert.Equal(10, orderItem.Quantity);
     }
 
     [Fact]
-    public void Product_QuantityOnHand_Should_Be_Set_Correctly()
+    public void OrderItemUnitPriceShouldBeSetCorrectly()
     {
-        var product = new Product { quantityOnHand = 50 };
-        Assert.Equal(50, product.quantityOnHand);
+        var orderItem = new OrderItem(1, 1, 1, 1000, 15.75m);
+        Assert.Equal(15.75m, orderItem.UnitPrice);
     }
 
     [Fact]
-    public void Product_QuantitySold_Should_Be_Set_Correctly()
+    public void ProductIdShouldBeSetCorrectly()
     {
-        var product = new Product { quantitySold = 30 };
-        Assert.Equal(30, product.quantitySold);
+        var product = new Product(1, "Pepsi", 10, 10, 10, 15.75m, 500m);
+        Assert.Equal(1, product.Id);
     }
 
     [Fact]
-    public void Product_QuantityReserved_Should_Be_Set_Correctly()
+    public void ProductNameShouldBeSetCorrectly()
     {
-        var product = new Product { quantityReserved = 20 };
-        Assert.Equal(20, product.quantityReserved);
+        var product = new Product(1, "Pepsi", 10, 10, 10, 15.75m, 500m);
+        Assert.Equal("Pepsi", product.Name);
     }
 
     [Fact]
-    public void Product_Price_Should_Be_Set_Correctly()
+    public void ProductQuantityOnHandShouldBeSetCorrectly()
     {
-        var product = new Product { price = 99.99m };
-        Assert.Equal(99.99m, product.price);
+        var product = new Product(1, "Pepsi", 50, 10, 10, 15.75m, 500m);
+        Assert.Equal(50, product.QuantityOnHand);
     }
 
     [Fact]
-    public void Product_Volume_Should_Be_Set_Correctly()
+    public void ProductQuantitySoldShouldBeSetCorrectly()
     {
-        var product = new Product { volume = 1.5m };
-        Assert.Equal(1.5m, product.volume);
+        var product = new Product(1, "Pepsi", 10, 30, 10, 15.75m, 500m);
+        Assert.Equal(30, product.QuantitySold);
+    }
+
+    [Fact]
+    public void ProductQuantityReservedShouldBeSetCorrectly()
+    {
+        var product = new Product(1, "Pepsi", 10, 10, 20, 15.75m, 500m);
+        Assert.Equal(20, product.QuantityReserved);
+    }
+
+    [Fact]
+    public void ProductPriceShouldBeSetCorrectly()
+    {
+        var product = new Product(1, "Pepsi", 10, 10, 10, 99.99m, 500m);
+        Assert.Equal(99.99m, product.Price);
+    }
+
+    [Fact]
+    public void ProductVolumeShouldBeSetCorrectly()
+    {
+        var product = new Product(1, "Pepsi", 10, 10, 10, 15.75m, 500m);
+        Assert.Equal(500m, product.Volume);
     }
 }

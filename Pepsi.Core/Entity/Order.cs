@@ -1,12 +1,19 @@
 namespace Pepsi.Core.Entity;
 
-public class Order
+public class Order(
+    int id,
+    int clientId,
+    int vehicleId,
+    decimal totalVolume,
+    DateTime orderDate,
+    DateTime deliveryDate,
+    string status)
 {
-    public int id { get; init; }
-    public int clientId { get; init; }
-    public int vehicleId { get; init; }
-    public decimal totalVolume { get; init; }
-    public DateTime orderDate { get; init; }
-    public DateTime deliveryDate { get; init; }
-    public string status { get; init; }
+    public int Id { get; init; } = id;
+    public int ClientId { get; init; } = clientId;
+    public int VehicleId { get; init; } = vehicleId;
+    public decimal TotalVolume { get; init; } = totalVolume;
+    public DateTime OrderDate { get; init; } = orderDate;
+    public DateTime DeliveryDate { get; init; } = deliveryDate;
+    public string Status { get; init; } = status;
 }
