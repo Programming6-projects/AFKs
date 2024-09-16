@@ -1,6 +1,0 @@
-@Pepsi.Api_HostAddress = http://localhost:5272
-
-GET {{Pepsi.Api_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
