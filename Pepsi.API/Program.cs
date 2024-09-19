@@ -1,26 +1,46 @@
-
-using Pepsi.Infrastructure.Utils;
-using System.Diagnostics.CodeAnalysis;
-
-
-
+using Microsoft.OpenApi.Models;
+using Pepsi.Core;
+using Pepsi.Core.Entity;
+using Pepsi.Core.Interfaces.Repositories;
+using Pepsi.Infrastructure;
+using Pepsi.Infrastructure.DataAccess;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddScoped<IDatabaseHelper, DatabaseHelper>();
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Pepsi API", Version = "v1" });
+});
 
-builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
-builder.Configuration.AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true);
+builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddCoreServices();
+
 
 var app = builder.Build();
 
-var vehicles = FileReader.ReadVehiclesFromJson();
-Console.WriteLine(vehicles!.Count);
-
-app.MapGet("/check-connection", (IDatabaseHelper dbHelper) =>
+if (app.Environment.IsDevelopment())
 {
-    var isConnected = dbHelper.CheckConnection();
-    return isConnected ? Results.Ok("Database connection is successful!") : Results.StatusCode(500);
-});
+    app.UseSwagger();
+    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Pepsi API v1"));
+}
+
+app.UseHttpsRedirection();
+app.UseAuthorization();
+app.MapControllers();
+
+using (var scope = app.Services.CreateScope())
+{
+    var vehicleLoader = scope.ServiceProvider.GetRequiredService<IDataLoader<Vehicle>>();
+    var vehicleRepository = scope.ServiceProvider.GetRequiredService<IVehicleRepository>();
+    var vehicles = await vehicleLoader.LoadDataAsync("Data/Vehicles.json").ConfigureAwait(false);
+    foreach (var vehicle in vehicles)
+    {
+        await vehicleRepository.AddAsync(vehicle).ConfigureAwait(false);
+    }
+    Console.WriteLine($"Loaded and added {vehicles.Count()} vehicles to the database.");
+
+}
 
 app.Run();
