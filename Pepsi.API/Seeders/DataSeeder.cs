@@ -4,25 +4,23 @@ using Pepsi.Infrastructure.DataAccess;
 
 namespace Pepsi.API.Seeders;
 
-public class DataSeeder
+public class DataSeeder(IVehicleService vehicleService, IDataLoader<VehicleDto> vehicleLoader)
 {
-    private readonly IVehicleService _vehicleService;
-    private readonly IDataLoader<VehicleDto> _vehicleLoader;
-
-    public DataSeeder(IVehicleService vehicleService, IDataLoader<VehicleDto> vehicleLoader)
-    {
-        _vehicleService = vehicleService;
-        _vehicleLoader = vehicleLoader;
-    }
-
     public async Task SeedVehiclesAsync(string jsonFilePath)
     {
-        var vehicles = await _vehicleLoader.LoadDataAsync(jsonFilePath).ConfigureAwait(false);
-        foreach (var vehicle in vehicles)
+        var currentVehicles = await vehicleService.GetAllAsync().ConfigureAwait(false);
+        IEnumerable<VehicleDto>? vehicles;
+        var vehicleDtos = currentVehicles.ToList();
+        if (vehicleDtos.Count == 0)
         {
-            await _vehicleService.AddAsync(vehicle).ConfigureAwait(false);
+            vehicles = await vehicleLoader.LoadDataAsync(jsonFilePath).ConfigureAwait(false);
+            var enumerable = vehicles as VehicleDto[] ?? vehicles.ToArray();
+            foreach (var vehicle in enumerable)
+            {
+                await vehicleService.AddAsync(vehicle).ConfigureAwait(false);
+            }
+            Console.WriteLine($"Loaded and added {enumerable.Length} vehicles to the database.");
         }
-
-        Console.WriteLine($"Loaded and added {vehicles.Count()} vehicles to the database.");
+        Console.WriteLine($"Vehicles had been loaded before. Vehicle Count {vehicleDtos.Count} on the database");
     }
 }
