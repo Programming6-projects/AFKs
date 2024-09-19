@@ -1,4 +1,5 @@
 using Microsoft.OpenApi.Models;
+using Pepsi.API.Seeders;
 using Pepsi.Core;
 using Pepsi.Core.Entity;
 using Pepsi.Core.Interfaces.Repositories;
@@ -16,7 +17,7 @@ builder.Services.AddSwaggerGen(c =>
 
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddCoreServices();
-
+builder.Services.AddScoped<DataSeeder>();
 
 var app = builder.Build();
 
@@ -32,15 +33,8 @@ app.MapControllers();
 
 using (var scope = app.Services.CreateScope())
 {
-    var vehicleLoader = scope.ServiceProvider.GetRequiredService<IDataLoader<Vehicle>>();
-    var vehicleRepository = scope.ServiceProvider.GetRequiredService<IVehicleRepository>();
-    var vehicles = await vehicleLoader.LoadDataAsync("Data/Vehicles.json").ConfigureAwait(false);
-    foreach (var vehicle in vehicles)
-    {
-        await vehicleRepository.AddAsync(vehicle).ConfigureAwait(false);
-    }
-    Console.WriteLine($"Loaded and added {vehicles.Count()} vehicles to the database.");
-
+    var dataSeeder = scope.ServiceProvider.GetRequiredService<DataSeeder>();
+    await dataSeeder.SeedVehiclesAsync("Data/Vehicles.json");
 }
 
 app.Run();

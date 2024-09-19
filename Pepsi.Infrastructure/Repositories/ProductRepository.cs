@@ -8,7 +8,7 @@ namespace Pepsi.Infrastructure.Repositories;
 
 public class ProductRepository : GenericRepository<Product>, IProductRepository
 {
-    public ProductRepository(IDatabaseAccessor dbAccessor) : base(dbAccessor, "products")
+    public ProductRepository(IDatabaseAccessor dbAccessor) : base(dbAccessor, "Products")
     {
     }
 

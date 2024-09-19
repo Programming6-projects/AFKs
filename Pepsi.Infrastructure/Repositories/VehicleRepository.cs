@@ -6,7 +6,7 @@ namespace Pepsi.Infrastructure.Repositories;
 
 public class VehicleRepository : GenericRepository<Vehicle>, IVehicleRepository
 {
-    public VehicleRepository(IDatabaseAccessor dbAccessor) : base(dbAccessor, "vehicles")
+    public VehicleRepository(IDatabaseAccessor dbAccessor) : base(dbAccessor, "Vehicles")
     {
     }
 

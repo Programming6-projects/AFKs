@@ -17,12 +17,6 @@ public class DataSeeder
 
     public async Task SeedVehiclesAsync(string jsonFilePath)
     {
-        var existingVehicles = await _vehicleService.GetAllAsync().ConfigureAwait(false);
-        foreach (var vehicle in existingVehicles)
-        {
-            await _vehicleService.DeleteAsync(vehicle.Id).ConfigureAwait(false);
-        }
-
         var vehicles = await _vehicleLoader.LoadDataAsync(jsonFilePath).ConfigureAwait(false);
         foreach (var vehicle in vehicles)
         {

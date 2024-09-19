@@ -28,14 +28,13 @@ public abstract class GenericRepository<TEntity>(IDatabaseAccessor dbAccessor, s
         var properties = typeof(TEntity).GetProperties()
             .Where(p => p.Name != "Id")
             .Select(p => p.Name);
-
-        var columnNames = string.Join(", ", properties.Select(p => p == "IsAvailable" ? "is_available" : p));
+        var columnNames = string.Join(", ", properties);
         var parameterNames = string.Join(", ", properties.Select(p => "@" + p));
-
-
         var sql = $"INSERT INTO {TableName} ({columnNames}) VALUES ({parameterNames}) RETURNING Id";
+
         return await DbAccessor.ExecuteScalarAsync<int>(sql, entity).ConfigureAwait(false);
     }
+
 
     public virtual async Task UpdateAsync(TEntity entity)
     {

@@ -6,7 +6,7 @@ namespace Pepsi.Infrastructure.Repositories;
 
 public class OrderItemRepository : GenericRepository<OrderItem>, IOrderItemRepository
 {
-    public OrderItemRepository(IDatabaseAccessor dbAccessor) : base(dbAccessor, "order_items")
+    public OrderItemRepository(IDatabaseAccessor dbAccessor) : base(dbAccessor, "OrderItems")
     {
     }
 

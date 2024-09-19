@@ -6,7 +6,7 @@ namespace Pepsi.Infrastructure.Repositories;
 
 public class ClientRepository : GenericRepository<Client>, IClientRepository
 {
-    public ClientRepository(IDatabaseAccessor dbAccessor) : base(dbAccessor, "clients")
+    public ClientRepository(IDatabaseAccessor dbAccessor) : base(dbAccessor, "Clients")
     {
     }
 
