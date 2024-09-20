@@ -24,7 +24,9 @@ public class JsonFileDataLoaderTests
     {
         var jsonData = "[{\"Id\":1,\"Name\":\"Client A\",\"Address\":\"Address A\"}]";
         _fileReaderMock.Setup(x => x.ReadFileAsync(It.IsAny<string>())).ReturnsAsync(jsonData);
-        _serializerMock.Setup(x => x.Deserialize<List<Client>>(jsonData)).Returns(new List<Client> { new Client { Id = 1, Name = "Client A" } });
+        _serializerMock.Setup(x => x.Deserialize<List<Client>>(jsonData)).Returns([
+            new Client { Id = 1, Name = "Client A" }
+        ]);
         var result = await _dataLoader.LoadDataAsync("path/to/json").ConfigureAwait(false);
         Assert.NotNull(result);
         var collection = result as Client[] ?? result.ToArray();

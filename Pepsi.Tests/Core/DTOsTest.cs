@@ -3,7 +3,7 @@ using Pepsi.Core.Entities;
 
 namespace Pepsi.Tests.Core;
 
-public class DTOsTest
+public class DtOsTest
 {
     [Fact]
         public void VehicleIdShouldBeSetCorrectly()

@@ -459,10 +459,9 @@ namespace Pepsi.Tests.Core
             var mockProductRepository = new Mock<IProductRepository>();
             var mockProductStockService = new Mock<IProductStockService>();
             var mockProductMapper = new Mock<IMapper<Product, ProductDto>>();
-            var mockStockMapper = new Mock<IMapper<ProductStock, ProductStockDto>>();
             var productService = new ProductService(mockProductRepository.Object, mockProductStockService.Object, mockProductMapper.Object);
-            var products = new List<Product> { new Product { Id = 1, Name = "Pepsi" } };
-            var productDtos = new List<ProductDto> { new ProductDto { Id = 1, Name = "Pepsi" } };
+            var products = new List<Product> { new() { Id = 1, Name = "Pepsi" } };
+            var productDtos = new List<ProductDto> { new() { Id = 1, Name = "Pepsi" } };
             mockProductRepository.Setup(repo => repo.GetAllAsync()).ReturnsAsync(products);
             mockProductMapper.Setup(mapper => mapper.MapToDtoList(products)).Returns(productDtos);
 
@@ -477,7 +476,6 @@ namespace Pepsi.Tests.Core
             var mockProductRepository = new Mock<IProductRepository>();
             var mockProductStockService = new Mock<IProductStockService>();
             var mockProductMapper = new Mock<IMapper<Product, ProductDto>>();
-            var mockStockMapper = new Mock<IMapper<ProductStock, ProductStockDto>>();
             var productService = new ProductService(mockProductRepository.Object, mockProductStockService.Object, mockProductMapper.Object);
             var product = new Product { Id = 1, Name = "Pepsi" };
             var productDto = new ProductDto { Id = 1, Name = "Pepsi" };
@@ -495,7 +493,6 @@ namespace Pepsi.Tests.Core
             var mockProductRepository = new Mock<IProductRepository>();
             var mockProductStockService = new Mock<IProductStockService>();
             var mockProductMapper = new Mock<IMapper<Product, ProductDto>>();
-            var mockStockMapper = new Mock<IMapper<ProductStock, ProductStockDto>>();
             var productService = new ProductService(mockProductRepository.Object, mockProductStockService.Object, mockProductMapper.Object);
             mockProductRepository.Setup(repo => repo.GetByIdAsync(1)).ReturnsAsync((Product)null!);
 
@@ -510,7 +507,6 @@ namespace Pepsi.Tests.Core
             var mockProductRepository = new Mock<IProductRepository>();
             var mockProductStockService = new Mock<IProductStockService>();
             var mockProductMapper = new Mock<IMapper<Product, ProductDto>>();
-            var mockStockMapper = new Mock<IMapper<ProductStock, ProductStockDto>>();
             var productService = new ProductService(mockProductRepository.Object, mockProductStockService.Object, mockProductMapper.Object);
             var products = new List<Product> { new Product { Id = 1, Name = "Pepsi" } };
             var productDtos = new List<ProductDto> { new ProductDto { Id = 1, Name = "Pepsi" } };
@@ -528,7 +524,6 @@ namespace Pepsi.Tests.Core
             var mockProductRepository = new Mock<IProductRepository>();
             var mockProductStockService = new Mock<IProductStockService>();
             var mockProductMapper = new Mock<IMapper<Product, ProductDto>>();
-            var mockStockMapper = new Mock<IMapper<ProductStock, ProductStockDto>>();
             var productService = new ProductService(mockProductRepository.Object, mockProductStockService.Object, mockProductMapper.Object);
             var products = new List<Product> { new Product { Id = 1, Name = "Pepsi" } };
             var productWithStockDto = new ProductWithStockDto { Id = 1, Name = "Pepsi", Stock = new ProductStockDto() };
@@ -549,7 +544,6 @@ namespace Pepsi.Tests.Core
             var mockProductRepository = new Mock<IProductRepository>();
             var mockProductStockService = new Mock<IProductStockService>();
             var mockProductMapper = new Mock<IMapper<Product, ProductDto>>();
-            var mockStockMapper = new Mock<IMapper<ProductStock, ProductStockDto>>();
             var productService = new ProductService(mockProductRepository.Object, mockProductStockService.Object, mockProductMapper.Object);
             var product = new Product { Id = 1, Name = "Pepsi" };
             var productWithStockDto = new ProductWithStockDto { Id = 1, Name = "Pepsi", Stock = new ProductStockDto() };
@@ -568,7 +562,6 @@ namespace Pepsi.Tests.Core
             var mockProductRepository = new Mock<IProductRepository>();
             var mockProductStockService = new Mock<IProductStockService>();
             var mockProductMapper = new Mock<IMapper<Product, ProductDto>>();
-            var mockStockMapper = new Mock<IMapper<ProductStock, ProductStockDto>>();
             var productService = new ProductService(mockProductRepository.Object, mockProductStockService.Object, mockProductMapper.Object);
             mockProductRepository.Setup(repo => repo.GetByIdAsync(1)).ReturnsAsync((Product)null!);
 
