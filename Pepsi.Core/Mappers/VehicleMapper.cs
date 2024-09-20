@@ -12,7 +12,10 @@ public class VehicleMapper : IMapper<Vehicle, VehicleDto>
         Debug.Assert(entity != null, nameof(entity) + " != null");
         return new VehicleDto
         {
-            Id = entity.Id, Type = entity.Type, Capacity = entity.Capacity, IsAvailable = entity.IsAvailable
+            Id = entity.Id,
+            Type = entity.Type,
+            Capacity = entity.Capacity,
+            IsAvailable = entity.IsAvailable
         };
     }
 

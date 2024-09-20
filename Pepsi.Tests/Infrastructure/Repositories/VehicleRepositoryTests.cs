@@ -32,7 +32,7 @@ public class VehicleRepositoryTests
     [Fact]
     public async Task AddAsyncShouldInsertVehicleAndReturnId()
     {
-        var newVehicle = new Vehicle { IsAvailable = true, Type = "van", Capacity = 7000};
+        var newVehicle = new Vehicle { IsAvailable = true, Type = "van", Capacity = 7000 };
         _databaseAccessorMock.Setup(x => x.ExecuteScalarAsync<int>(It.IsAny<string>(), It.IsAny<object>())).ReturnsAsync(1);
         var result = await _vehicleRepository.AddAsync(newVehicle).ConfigureAwait(false);
         Assert.Equal(1, result);
