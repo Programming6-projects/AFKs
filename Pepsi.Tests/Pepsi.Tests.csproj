@@ -15,6 +15,9 @@
     <Threshold>80</Threshold>
     <ThresholdType>line,branch,method</ThresholdType>
     <ThresholdStat>total</ThresholdStat>
+      
+    <CoverletOutputFormat>opencover</CoverletOutputFormat>
+    <Exclude>[Pepsi.Infrastructure.DatabaseAccessor*]*</Exclude>
   </PropertyGroup>
 
   <ItemGroup>
@@ -36,5 +39,9 @@
     <ProjectReference Include="..\Pepsi.API\Pepsi.API.csproj" />
     <ProjectReference Include="..\Pepsi.Core\Pepsi.Core.csproj" />
     <ProjectReference Include="..\Pepsi.Infrastructure\Pepsi.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="API\" />
   </ItemGroup>
 </Project>
