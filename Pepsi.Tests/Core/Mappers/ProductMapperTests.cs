@@ -1,17 +1,12 @@
 using Pepsi.Core.DTOs;
-using Pepsi.Core.Entity;
+using Pepsi.Core.Entities;
 using Pepsi.Core.Mappers;
 
 namespace Pepsi.Tests.Core.Mappers
 {
     public class ProductMapperTests
     {
-        private readonly ProductMapper _mapper;
-
-        public ProductMapperTests()
-        {
-            _mapper = new ProductMapper();
-        }
+        private readonly ProductMapper _mapper = new();
 
         [Fact]
         public void MapToDtoShouldMapProductToProductDto()

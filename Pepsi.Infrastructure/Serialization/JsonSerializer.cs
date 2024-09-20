@@ -4,15 +4,10 @@ namespace Pepsi.Infrastructure.Serialization;
 
 public class JsonSerializer : ISerializer
 {
-    private readonly JsonSerializerOptions _options;
-
-    public JsonSerializer()
+    private readonly JsonSerializerOptions _options = new()
     {
-        _options = new JsonSerializerOptions
-        {
-            PropertyNameCaseInsensitive = true
-        };
-    }
+        PropertyNameCaseInsensitive = true
+    };
 
     public T? Deserialize<T>(string data) where T : class
     {

@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Pepsi.Core.DTOs;
 using Pepsi.Core.Interfaces.Services;
@@ -6,64 +7,53 @@ namespace Pepsi.API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class ClientController : ControllerBase
+public class ClientController(IClientService clientService) : ControllerBase
 {
-    private readonly IClientService _clientService;
-
-    public ClientController(IClientService clientService)
-    {
-        _clientService = clientService;
-    }
-
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
-        var clients = await _clientService.GetAllAsync().ConfigureAwait(false);
+        var clients = await clientService.GetAllAsync().ConfigureAwait(false);
         return Ok(clients);
     }
 
-    [HttpGet("{id}")]
+    [HttpGet("{id:int}")]
     public async Task<IActionResult> GetById(int id)
     {
-        var client = await _clientService.GetByIdAsync(id).ConfigureAwait(false);
-        if (client == null)
-        {
-            return NotFound();
-        }
-
-        return Ok(client);
+        var client = await clientService.GetByIdAsync(id).ConfigureAwait(false);
+        return client == null ? NotFound() : Ok(client);
     }
 
     [HttpPost]
     public async Task<IActionResult> Add([FromBody] ClientDto clientDto)
     {
-        var id = await _clientService.AddAsync(clientDto).ConfigureAwait(false);
+        var id = await clientService.AddAsync(clientDto).ConfigureAwait(false);
         return CreatedAtAction(nameof(GetById), new { id }, clientDto);
     }
 
-    [HttpPut("{id}")]
+    [HttpPut("{id:int}")]
     public async Task<IActionResult> Update(int id, [FromBody] ClientDto clientDto)
     {
+        Debug.Assert(clientDto != null, nameof(clientDto) + " != null");
         if (id != clientDto.Id)
         {
             return BadRequest();
         }
 
-        await _clientService.UpdateAsync(clientDto).ConfigureAwait(false);
+        await clientService.UpdateAsync(clientDto).ConfigureAwait(false);
         return NoContent();
     }
 
-    [HttpDelete("{id}")]
+    [HttpDelete("{id:int}")]
     public async Task<IActionResult> Delete(int id)
     {
-        await _clientService.DeleteAsync(id).ConfigureAwait(false);
+        await clientService.DeleteAsync(id).ConfigureAwait(false);
         return NoContent();
     }
 
     [HttpGet("region/{region}")]
     public async Task<IActionResult> GetClientsByRegion(string region)
     {
-        var clients = await _clientService.GetClientsByRegionAsync(region).ConfigureAwait(false);
+        var clients = await clientService.GetClientsByRegionAsync(region).ConfigureAwait(false);
         return Ok(clients);
     }
 }

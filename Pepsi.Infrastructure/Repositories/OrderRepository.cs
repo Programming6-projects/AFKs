@@ -1,24 +1,21 @@
-using Pepsi.Core.Entity;
+using Pepsi.Core.Entities;
 using Pepsi.Core.Interfaces.Repositories;
 using Pepsi.Infrastructure.DatabaseAccess;
 
 namespace Pepsi.Infrastructure.Repositories;
 
-public class OrderRepository : GenericRepository<Order>, IOrderRepository
+public class OrderRepository(IDatabaseAccessor dbAccessor)
+    : GenericRepository<Order>(dbAccessor, "Orders"), IOrderRepository
 {
-    public OrderRepository(IDatabaseAccessor dbAccessor) : base(dbAccessor, "Orders")
-    {
-    }
-
     public async Task<IEnumerable<Order>> GetOrdersByClientIdAsync(int clientId)
     {
-        var sql = "SELECT * FROM Orders WHERE ClientId = @ClientId";
+        const string sql = "SELECT * FROM Orders WHERE ClientId = @ClientId";
         return await DbAccessor.QueryAsync<Order>(sql, new { ClientId = clientId }).ConfigureAwait(false);
     }
 
     public async Task<IEnumerable<Order>> GetPendingOrdersAsync()
     {
-        var sql = "SELECT * FROM Orders WHERE Status = @Status";
+        const string sql = "SELECT * FROM Orders WHERE Status = @Status";
         return await DbAccessor.QueryAsync<Order>(sql, new { Status = OrderStatus.Pending }).ConfigureAwait(false);
     }
 
@@ -27,10 +24,11 @@ public class OrderRepository : GenericRepository<Order>, IOrderRepository
         var sql = $"SELECT * FROM {TableName}";
         var orders = await DbAccessor.QueryAsync<Order>(sql).ConfigureAwait(false);
 
-        foreach (var order in orders)
+        IEnumerable<Order> allAsync = orders.ToList();
+        foreach (var order in allAsync)
         {
             order.Status = Enum.Parse<OrderStatus>(order.Status.ToString());
         }
-        return orders;
+        return allAsync;
     }
 }

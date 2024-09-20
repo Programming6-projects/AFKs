@@ -9,11 +9,10 @@ public class DataSeeder(IVehicleService vehicleService, IDataLoader<VehicleDto> 
     public async Task SeedVehiclesAsync(string jsonFilePath)
     {
         var currentVehicles = await vehicleService.GetAllAsync().ConfigureAwait(false);
-        IEnumerable<VehicleDto>? vehicles;
         var vehicleDtos = currentVehicles.ToList();
         if (vehicleDtos.Count == 0)
         {
-            vehicles = await vehicleLoader.LoadDataAsync(jsonFilePath).ConfigureAwait(false);
+            var vehicles = await vehicleLoader.LoadDataAsync(jsonFilePath).ConfigureAwait(false);
             var enumerable = vehicles as VehicleDto[] ?? vehicles.ToArray();
             foreach (var vehicle in enumerable)
             {

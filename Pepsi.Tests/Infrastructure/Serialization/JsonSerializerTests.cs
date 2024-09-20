@@ -1,16 +1,11 @@
-using Pepsi.Core.Entity;
+using Pepsi.Core.Entities;
 using Pepsi.Infrastructure.Serialization;
 
 namespace Pepsi.Tests.Infrastructure.Serialization;
 
 public class JsonSerializerTests
 {
-    private readonly JsonSerializer _jsonSerializer;
-
-    public JsonSerializerTests()
-    {
-        _jsonSerializer = new JsonSerializer();
-    }
+    private readonly JsonSerializer _jsonSerializer = new();
 
     [Fact]
     public void DeserializeShouldReturnCorrectObject()

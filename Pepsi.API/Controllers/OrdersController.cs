@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Pepsi.Core.DTOs;
 using Pepsi.Core.Interfaces.Services;
@@ -6,64 +7,53 @@ namespace Pepsi.API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class OrderController : ControllerBase
+public class OrderController(IOrderService orderService) : ControllerBase
 {
-    private readonly IOrderService _orderService;
-
-    public OrderController(IOrderService orderService)
-    {
-        _orderService = orderService;
-    }
-
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
-        var orders = await _orderService.GetAllAsync().ConfigureAwait(false);
+        var orders = await orderService.GetAllAsync().ConfigureAwait(false);
         return Ok(orders);
     }
 
-    [HttpGet("{id}")]
+    [HttpGet("{id:int}")]
     public async Task<IActionResult> GetById(int id)
     {
-        var order = await _orderService.GetByIdAsync(id).ConfigureAwait(false);
-        if (order == null)
-        {
-            return NotFound();
-        }
-
-        return Ok(order);
+        var order = await orderService.GetByIdAsync(id).ConfigureAwait(false);
+        return order == null ? NotFound() : Ok(order);
     }
 
-    [HttpGet("client/{clientId}")]
+    [HttpGet("client/{clientId:int}")]
     public async Task<IActionResult> GetOrdersByClientId(int clientId)
     {
-        var orders = await _orderService.GetOrdersByClientIdAsync(clientId).ConfigureAwait(false);
+        var orders = await orderService.GetOrdersByClientIdAsync(clientId).ConfigureAwait(false);
         return Ok(orders);
     }
 
     [HttpPost]
     public async Task<IActionResult> Add([FromBody] OrderDto orderDto)
     {
-        var id = await _orderService.AddAsync(orderDto).ConfigureAwait(false);
+        var id = await orderService.AddAsync(orderDto).ConfigureAwait(false);
         return CreatedAtAction(nameof(GetById), new { id }, orderDto);
     }
 
-    [HttpPut("{id}")]
+    [HttpPut("{id:int}")]
     public async Task<IActionResult> Update(int id, [FromBody] OrderDto orderDto)
     {
+        Debug.Assert(orderDto != null, nameof(orderDto) + " != null");
         if (id != orderDto.Id)
         {
             return BadRequest();
         }
 
-        await _orderService.UpdateAsync(orderDto).ConfigureAwait(false);
+        await orderService.UpdateAsync(orderDto).ConfigureAwait(false);
         return NoContent();
     }
 
-    [HttpDelete("{id}")]
+    [HttpDelete("{id:int}")]
     public async Task<IActionResult> Delete(int id)
     {
-        await _orderService.DeleteAsync(id).ConfigureAwait(false);
+        await orderService.DeleteAsync(id).ConfigureAwait(false);
         return NoContent();
     }
 }

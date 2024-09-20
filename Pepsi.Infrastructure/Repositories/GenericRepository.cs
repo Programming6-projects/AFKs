@@ -1,6 +1,5 @@
-using System.Diagnostics.CodeAnalysis;
+using Pepsi.Core.Entities;
 using Pepsi.Infrastructure.DatabaseAccess;
-using Pepsi.Core.Entity;
 using Pepsi.Core.Interfaces.Repositories;
 
 namespace Pepsi.Infrastructure.Repositories;
@@ -28,8 +27,9 @@ public abstract class GenericRepository<TEntity>(IDatabaseAccessor dbAccessor, s
         var properties = typeof(TEntity).GetProperties()
             .Where(p => p.Name != "Id")
             .Select(p => p.Name);
-        var columnNames = string.Join(", ", properties);
-        var parameterNames = string.Join(", ", properties.Select(p => "@" + p));
+        IEnumerable<string> enumerable = properties.ToList();
+        var columnNames = string.Join(", ", enumerable);
+        var parameterNames = string.Join(", ", enumerable.Select(p => "@" + p));
         var sql = $"INSERT INTO {TableName} ({columnNames}) VALUES ({parameterNames}) RETURNING Id";
 
         return await DbAccessor.ExecuteScalarAsync<int>(sql, entity).ConfigureAwait(false);

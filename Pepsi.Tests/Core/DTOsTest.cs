@@ -1,5 +1,5 @@
 using Pepsi.Core.DTOs;
-using Pepsi.Core.Entity;
+using Pepsi.Core.Entities;
 
 namespace Pepsi.Tests.Core;
 

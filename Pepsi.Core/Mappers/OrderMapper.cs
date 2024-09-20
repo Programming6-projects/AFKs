@@ -1,48 +1,50 @@
+using System.Diagnostics;
 using Pepsi.Core.DTOs;
-using Pepsi.Core.Entity;
+using Pepsi.Core.Entities;
 using Pepsi.Core.Interfaces.Mappers;
 
 namespace Pepsi.Core.Mappers;
 
 
-public class OrderMapper : IMapper<Order, OrderDto>
+public class OrderMapper(
+    IMapper<OrderItem, OrderItemDto> orderItemMapper,
+    IMapper<Client, ClientDto> clientMapper,
+    IMapper<Vehicle, VehicleDto> vehicleMapper)
+    : IMapper<Order, OrderDto>
 {
-    private readonly IMapper<OrderItem, OrderItemDto> _orderItemMapper;
-    private readonly IMapper<Client, ClientDto> _clientMapper;
-    private readonly IMapper<Vehicle, VehicleDto> _vehicleMapper;
-
-    public OrderMapper(IMapper<OrderItem, OrderItemDto> orderItemMapper, IMapper<Client, ClientDto> clientMapper, IMapper<Vehicle, VehicleDto> vehicleMapper)
+    public OrderDto MapToDto(Order entity)
     {
-        _orderItemMapper = orderItemMapper;
-        _clientMapper = clientMapper;
-        _vehicleMapper = vehicleMapper;
+        Debug.Assert(entity != null, nameof(entity) + " != null");
+        return new OrderDto
+        {
+            Id = entity.Id,
+            ClientId = entity.ClientId,
+            Client = entity.Client != null ? clientMapper.MapToDto(entity.Client) : null,
+            VehicleId = entity.VehicleId,
+            Vehicle = entity.Vehicle != null ? vehicleMapper.MapToDto(entity.Vehicle) : null,
+            Items = orderItemMapper.MapToDtoList(entity.Items),
+            TotalVolume = entity.TotalVolume,
+            OrderDate = entity.OrderDate,
+            DeliveryDate = entity.DeliveryDate,
+            Status = entity.Status
+        };
     }
 
-    public OrderDto MapToDto(Order entity) => new OrderDto
+    public Order MapToEntity(OrderDto dto)
     {
-        Id = entity.Id,
-        ClientId = entity.ClientId,
-        Client = entity.Client != null ? _clientMapper.MapToDto(entity.Client) : null,
-        VehicleId = entity.VehicleId,
-        Vehicle = entity.Vehicle != null ? _vehicleMapper.MapToDto(entity.Vehicle) : null,
-        Items = _orderItemMapper.MapToDtoList(entity.Items),
-        TotalVolume = entity.TotalVolume,
-        OrderDate = entity.OrderDate,
-        DeliveryDate = entity.DeliveryDate,
-        Status = entity.Status
-    };
-
-    public Order MapToEntity(OrderDto dto) => new Order
-    {
-        Id = dto.Id,
-        ClientId = dto.ClientId,
-        VehicleId = dto.VehicleId,
-        Items = _orderItemMapper.MapToEntityList(dto.Items),
-        TotalVolume = dto.TotalVolume,
-        OrderDate = dto.OrderDate,
-        DeliveryDate = dto.DeliveryDate,
-        Status = dto.Status
-    };
+        Debug.Assert(dto != null, nameof(dto) + " != null");
+        return new Order
+        {
+            Id = dto.Id,
+            ClientId = dto.ClientId,
+            VehicleId = dto.VehicleId,
+            Items = orderItemMapper.MapToEntityList(dto.Items),
+            TotalVolume = dto.TotalVolume,
+            OrderDate = dto.OrderDate,
+            DeliveryDate = dto.DeliveryDate,
+            Status = dto.Status
+        };
+    }
 
     public IEnumerable<OrderDto> MapToDtoList(IEnumerable<Order> entities) =>
         entities.Select(MapToDto);

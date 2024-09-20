@@ -1,5 +1,5 @@
 using Moq;
-using Pepsi.Core.Entity;
+using Pepsi.Core.Entities;
 using Pepsi.Infrastructure.DatabaseAccess;
 using Pepsi.Infrastructure.Repositories;
 

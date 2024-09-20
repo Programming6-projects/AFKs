@@ -1,17 +1,12 @@
 using Pepsi.Core.DTOs;
-using Pepsi.Core.Entity;
+using Pepsi.Core.Entities;
 using Pepsi.Core.Mappers;
 
 namespace Pepsi.Tests.Core.Mappers
 {
     public class VehicleMapperTests
     {
-        private readonly VehicleMapper _mapper;
-
-        public VehicleMapperTests()
-        {
-            _mapper = new VehicleMapper();
-        }
+        private readonly VehicleMapper _mapper = new();
 
         [Fact]
         public void MapToDtoShouldMapVehicleToVehicleDto()

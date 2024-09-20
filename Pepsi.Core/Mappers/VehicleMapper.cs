@@ -1,26 +1,26 @@
+using System.Diagnostics;
 using Pepsi.Core.DTOs;
-using Pepsi.Core.Entity;
+using Pepsi.Core.Entities;
 using Pepsi.Core.Interfaces.Mappers;
 
 namespace Pepsi.Core.Mappers;
 
 public class VehicleMapper : IMapper<Vehicle, VehicleDto>
 {
-    public VehicleDto MapToDto(Vehicle entity) => new VehicleDto
+    public VehicleDto MapToDto(Vehicle entity)
     {
-        Id = entity.Id,
-        Type = entity.Type,
-        Capacity = entity.Capacity,
-        IsAvailable = entity.IsAvailable
-    };
+        Debug.Assert(entity != null, nameof(entity) + " != null");
+        return new VehicleDto
+        {
+            Id = entity.Id, Type = entity.Type, Capacity = entity.Capacity, IsAvailable = entity.IsAvailable
+        };
+    }
 
-    public Vehicle MapToEntity(VehicleDto dto) => new Vehicle
+    public Vehicle MapToEntity(VehicleDto dto)
     {
-        Id = dto.Id,
-        Type = dto.Type,
-        Capacity = dto.Capacity,
-        IsAvailable = dto.IsAvailable
-    };
+        Debug.Assert(dto != null, nameof(dto) + " != null");
+        return new Vehicle { Id = dto.Id, Type = dto.Type, Capacity = dto.Capacity, IsAvailable = dto.IsAvailable };
+    }
 
     public IEnumerable<VehicleDto> MapToDtoList(IEnumerable<Vehicle> entities) =>
         entities.Select(MapToDto);

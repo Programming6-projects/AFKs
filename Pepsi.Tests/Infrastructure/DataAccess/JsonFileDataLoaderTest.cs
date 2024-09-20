@@ -1,5 +1,5 @@
 using Moq;
-using Pepsi.Core.Entity;
+using Pepsi.Core.Entities;
 using Pepsi.Infrastructure.DataAccess;
 using Pepsi.Infrastructure.FileAccess;
 using Pepsi.Infrastructure.Serialization;

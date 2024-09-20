@@ -1,18 +1,15 @@
-using Pepsi.Core.Entity;
+using Pepsi.Core.Entities;
 using Pepsi.Core.Interfaces.Repositories;
 using Pepsi.Infrastructure.DatabaseAccess;
 
 namespace Pepsi.Infrastructure.Repositories;
 
-public class VehicleRepository : GenericRepository<Vehicle>, IVehicleRepository
+public class VehicleRepository(IDatabaseAccessor dbAccessor)
+    : GenericRepository<Vehicle>(dbAccessor, "Vehicles"), IVehicleRepository
 {
-    public VehicleRepository(IDatabaseAccessor dbAccessor) : base(dbAccessor, "Vehicles")
-    {
-    }
-
     public async Task<IEnumerable<Vehicle>> GetAvailableVehiclesAsync()
     {
-        var sql = "SELECT * FROM Vehicles WHERE IsAvailable = @IsAvailable";
+        const string sql = "SELECT * FROM Vehicles WHERE IsAvailable = @IsAvailable";
         return await DbAccessor.QueryAsync<Vehicle>(sql, new { IsAvailable = true }).ConfigureAwait(false);
     }
 }

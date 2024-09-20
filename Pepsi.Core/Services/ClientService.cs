@@ -1,5 +1,5 @@
 using Pepsi.Core.DTOs;
-using Pepsi.Core.Entity;
+using Pepsi.Core.Entities;
 using Pepsi.Core.Interfaces.Mappers;
 using Pepsi.Core.Interfaces.Repositories;
 using Pepsi.Core.Interfaces.Services;
@@ -26,15 +26,15 @@ public class ClientService(IClientRepository clientRepository, IMapper<Client, C
         return null;
     }
 
-    public async Task<int> AddAsync(ClientDto entity)
+    public async Task<int> AddAsync(ClientDto dto)
     {
-        var client = mapper.MapToEntity(entity);
+        var client = mapper.MapToEntity(dto);
         return await clientRepository.AddAsync(client).ConfigureAwait(false);
     }
 
-    public async Task UpdateAsync(ClientDto entity)
+    public async Task UpdateAsync(ClientDto dto)
     {
-        var client = mapper.MapToEntity(entity);
+        var client = mapper.MapToEntity(dto);
         await clientRepository.UpdateAsync(client).ConfigureAwait(false);
     }
 

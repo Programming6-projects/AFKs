@@ -1,40 +1,47 @@
+using System.Diagnostics;
 using Microsoft.OpenApi.Models;
 using Pepsi.API.Seeders;
 using Pepsi.Core;
-using Pepsi.Core.Entity;
-using Pepsi.Core.Interfaces.Repositories;
 using Pepsi.Infrastructure;
-using Pepsi.Infrastructure.DataAccess;
 
-var builder = WebApplication.CreateBuilder(args);
+namespace Pepsi.API;
 
-builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c =>
+internal static class Program
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Pepsi API", Version = "v1" });
-});
+    public static async Task Main(string[] args)
+    {
+        var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddInfrastructure(builder.Configuration);
-builder.Services.AddCoreServices();
-builder.Services.AddScoped<DataSeeder>();
+        builder.Services.AddControllers();
+        builder.Services.AddEndpointsApiExplorer();
+        builder.Services.AddSwaggerGen(c =>
+        {
+            c.SwaggerDoc("v1", new OpenApiInfo { Title = "Pepsi API", Version = "v1" });
+        });
 
-var app = builder.Build();
+        builder.Services.AddInfrastructure(builder.Configuration);
+        builder.Services.AddCoreServices();
+        builder.Services.AddScoped<DataSeeder>();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Pepsi API v1"));
+        var app = builder.Build();
+
+        if (app.Environment.IsDevelopment())
+        {
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Pepsi API v1"));
+        }
+
+        app.UseHttpsRedirection();
+        app.UseAuthorization();
+        app.MapControllers();
+
+        using (var scope = app.Services.CreateScope())
+        {
+            var dataSeeder = scope.ServiceProvider.GetRequiredService<DataSeeder>();
+            await dataSeeder.SeedVehiclesAsync("Data/Vehicles.json").ConfigureAwait(false);
+        }
+
+        Debug.Assert(app != null, nameof(app) + " != null");
+        await app.RunAsync().ConfigureAwait(false);
+    }
 }
-
-app.UseHttpsRedirection();
-app.UseAuthorization();
-app.MapControllers();
-
-using (var scope = app.Services.CreateScope())
-{
-    var dataSeeder = scope.ServiceProvider.GetRequiredService<DataSeeder>();
-    await dataSeeder.SeedVehiclesAsync("Data/Vehicles.json");
-}
-
-app.Run();

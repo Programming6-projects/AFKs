@@ -1,9 +1,9 @@
 using Pepsi.Core.Services;
-using Pepsi.Core.Entity;
 using Moq;
 using Pepsi.Core.Interfaces.Repositories;
 using Pepsi.Core.Interfaces.Mappers;
 using Pepsi.Core.DTOs;
+using Pepsi.Core.Entities;
 using Pepsi.Core.Interfaces.Services;
 
 namespace Pepsi.Tests.Core
@@ -460,7 +460,7 @@ namespace Pepsi.Tests.Core
             var mockProductStockService = new Mock<IProductStockService>();
             var mockProductMapper = new Mock<IMapper<Product, ProductDto>>();
             var mockStockMapper = new Mock<IMapper<ProductStock, ProductStockDto>>();
-            var productService = new ProductService(mockProductRepository.Object, mockProductStockService.Object, mockProductMapper.Object, mockStockMapper.Object);
+            var productService = new ProductService(mockProductRepository.Object, mockProductStockService.Object, mockProductMapper.Object);
             var products = new List<Product> { new Product { Id = 1, Name = "Pepsi" } };
             var productDtos = new List<ProductDto> { new ProductDto { Id = 1, Name = "Pepsi" } };
             mockProductRepository.Setup(repo => repo.GetAllAsync()).ReturnsAsync(products);
@@ -478,7 +478,7 @@ namespace Pepsi.Tests.Core
             var mockProductStockService = new Mock<IProductStockService>();
             var mockProductMapper = new Mock<IMapper<Product, ProductDto>>();
             var mockStockMapper = new Mock<IMapper<ProductStock, ProductStockDto>>();
-            var productService = new ProductService(mockProductRepository.Object, mockProductStockService.Object, mockProductMapper.Object, mockStockMapper.Object);
+            var productService = new ProductService(mockProductRepository.Object, mockProductStockService.Object, mockProductMapper.Object);
             var product = new Product { Id = 1, Name = "Pepsi" };
             var productDto = new ProductDto { Id = 1, Name = "Pepsi" };
             mockProductRepository.Setup(repo => repo.GetByIdAsync(1)).ReturnsAsync(product);
@@ -496,7 +496,7 @@ namespace Pepsi.Tests.Core
             var mockProductStockService = new Mock<IProductStockService>();
             var mockProductMapper = new Mock<IMapper<Product, ProductDto>>();
             var mockStockMapper = new Mock<IMapper<ProductStock, ProductStockDto>>();
-            var productService = new ProductService(mockProductRepository.Object, mockProductStockService.Object, mockProductMapper.Object, mockStockMapper.Object);
+            var productService = new ProductService(mockProductRepository.Object, mockProductStockService.Object, mockProductMapper.Object);
             mockProductRepository.Setup(repo => repo.GetByIdAsync(1)).ReturnsAsync((Product)null!);
 
             var result = await productService.GetByIdAsync(1).ConfigureAwait(false);
@@ -511,7 +511,7 @@ namespace Pepsi.Tests.Core
             var mockProductStockService = new Mock<IProductStockService>();
             var mockProductMapper = new Mock<IMapper<Product, ProductDto>>();
             var mockStockMapper = new Mock<IMapper<ProductStock, ProductStockDto>>();
-            var productService = new ProductService(mockProductRepository.Object, mockProductStockService.Object, mockProductMapper.Object, mockStockMapper.Object);
+            var productService = new ProductService(mockProductRepository.Object, mockProductStockService.Object, mockProductMapper.Object);
             var products = new List<Product> { new Product { Id = 1, Name = "Pepsi" } };
             var productDtos = new List<ProductDto> { new ProductDto { Id = 1, Name = "Pepsi" } };
             mockProductRepository.Setup(repo => repo.GetProductsByNameAsync("Pepsi")).ReturnsAsync(products);
@@ -529,7 +529,7 @@ namespace Pepsi.Tests.Core
             var mockProductStockService = new Mock<IProductStockService>();
             var mockProductMapper = new Mock<IMapper<Product, ProductDto>>();
             var mockStockMapper = new Mock<IMapper<ProductStock, ProductStockDto>>();
-            var productService = new ProductService(mockProductRepository.Object, mockProductStockService.Object, mockProductMapper.Object, mockStockMapper.Object);
+            var productService = new ProductService(mockProductRepository.Object, mockProductStockService.Object, mockProductMapper.Object);
             var products = new List<Product> { new Product { Id = 1, Name = "Pepsi" } };
             var productWithStockDto = new ProductWithStockDto { Id = 1, Name = "Pepsi", Stock = new ProductStockDto() };
             mockProductRepository.Setup(repo => repo.GetAllAsync()).ReturnsAsync(products);
@@ -550,7 +550,7 @@ namespace Pepsi.Tests.Core
             var mockProductStockService = new Mock<IProductStockService>();
             var mockProductMapper = new Mock<IMapper<Product, ProductDto>>();
             var mockStockMapper = new Mock<IMapper<ProductStock, ProductStockDto>>();
-            var productService = new ProductService(mockProductRepository.Object, mockProductStockService.Object, mockProductMapper.Object, mockStockMapper.Object);
+            var productService = new ProductService(mockProductRepository.Object, mockProductStockService.Object, mockProductMapper.Object);
             var product = new Product { Id = 1, Name = "Pepsi" };
             var productWithStockDto = new ProductWithStockDto { Id = 1, Name = "Pepsi", Stock = new ProductStockDto() };
             mockProductRepository.Setup(repo => repo.GetByIdAsync(1)).ReturnsAsync(product);
@@ -569,7 +569,7 @@ namespace Pepsi.Tests.Core
             var mockProductStockService = new Mock<IProductStockService>();
             var mockProductMapper = new Mock<IMapper<Product, ProductDto>>();
             var mockStockMapper = new Mock<IMapper<ProductStock, ProductStockDto>>();
-            var productService = new ProductService(mockProductRepository.Object, mockProductStockService.Object, mockProductMapper.Object, mockStockMapper.Object);
+            var productService = new ProductService(mockProductRepository.Object, mockProductStockService.Object, mockProductMapper.Object);
             mockProductRepository.Setup(repo => repo.GetByIdAsync(1)).ReturnsAsync((Product)null!);
 
             var result = await productService.GetProductByIdWithStockAsync(1).ConfigureAwait(false);

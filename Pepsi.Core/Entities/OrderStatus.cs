@@ -1,4 +1,4 @@
-namespace Pepsi.Core.Entity;
+namespace Pepsi.Core.Entities;
 
 public enum OrderStatus
 {

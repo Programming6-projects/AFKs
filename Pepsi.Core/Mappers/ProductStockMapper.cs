@@ -1,5 +1,6 @@
+using System.Diagnostics;
 using Pepsi.Core.DTOs;
-using Pepsi.Core.Entity;
+using Pepsi.Core.Entities;
 using Pepsi.Core.Interfaces.Mappers;
 
 namespace Pepsi.Core.Mappers;
@@ -9,6 +10,7 @@ public class ProductStockMapper : IMapper<ProductStock, ProductStockDto>
 {
     public ProductStockDto MapToDto(ProductStock entity)
     {
+        Debug.Assert(entity != null, nameof(entity) + " != null");
         return new ProductStockDto
         {
             Id = entity.Id,
@@ -21,6 +23,7 @@ public class ProductStockMapper : IMapper<ProductStock, ProductStockDto>
 
     public ProductStock MapToEntity(ProductStockDto dto)
     {
+        Debug.Assert(dto != null, nameof(dto) + " != null");
         return new ProductStock
         {
             Id = dto.Id,

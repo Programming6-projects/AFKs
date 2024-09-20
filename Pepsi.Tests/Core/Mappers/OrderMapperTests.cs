@@ -1,8 +1,8 @@
 using Pepsi.Core.DTOs;
-using Pepsi.Core.Entity;
 using Pepsi.Core.Mappers;
 using Pepsi.Core.Interfaces.Mappers;
 using Moq;
+using Pepsi.Core.Entities;
 
 namespace Pepsi.Tests.Core.Mappers
 {

@@ -1,6 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using Pepsi.Core.DTOs;
-using Pepsi.Core.Entity;
+using Pepsi.Core.Entities;
 using Pepsi.Core.Interfaces.Mappers;
 using Pepsi.Core.Interfaces.Services;
 using Pepsi.Core.Mappers;
@@ -30,5 +30,4 @@ public static class CoreInjection
 
         return services;
     }
-
 }
