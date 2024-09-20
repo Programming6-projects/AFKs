@@ -40,8 +40,4 @@
     <ProjectReference Include="..\Pepsi.Core\Pepsi.Core.csproj" />
     <ProjectReference Include="..\Pepsi.Infrastructure\Pepsi.Infrastructure.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="API\" />
-  </ItemGroup>
 </Project>
