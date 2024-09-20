@@ -3,9 +3,6 @@ using Pepsi.Core.Entity;
 using Pepsi.Core.Mappers;
 using Pepsi.Core.Interfaces.Mappers;
 using Moq;
-using Xunit;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Pepsi.Tests.Core.Mappers
 {
@@ -25,7 +22,7 @@ namespace Pepsi.Tests.Core.Mappers
         }
 
         [Fact]
-        public void MapToDto_ShouldMapOrderToOrderDto()
+        public void MapToDtoShouldMapOrderToOrderDto()
         {
             var client = new Client { Id = 1, Name = "Santiago", Region = "Cochabamba", Address = "123" };
             var vehicle = new Vehicle { Id = 1, Type = "Truck", Capacity = 1000.5m };
@@ -61,7 +58,7 @@ namespace Pepsi.Tests.Core.Mappers
         }
 
         [Fact]
-        public void MapToEntity_ShouldMapOrderDtoToOrder()
+        public void MapToEntityShouldMapOrderDtoToOrder()
         {
             var orderItemDtos = new List<OrderItemDto>
             {
@@ -89,7 +86,7 @@ namespace Pepsi.Tests.Core.Mappers
         }
 
         [Fact]
-        public void MapToDtoList_ShouldMapOrderListToOrderDtoList()
+        public void MapToDtoListShouldMapOrderListToOrderDtoList()
         {
             var client = new Client { Id = 1, Name = "Santiago", Region = "Cochabamba", Address = "123" };
             var vehicle = new Vehicle { Id = 1, Type = "Truck", Capacity = 1000.5m };
@@ -119,12 +116,13 @@ namespace Pepsi.Tests.Core.Mappers
 
             var result = _mapper.MapToDtoList(orders);
 
-            Assert.Equal(orderDtos.Count, result.Count());
-            Assert.Equal(orderDtos[0].Id, result.ElementAt(0).Id);
+            var enumerable = result as OrderDto[] ?? result.ToArray();
+            Assert.Equal(orderDtos.Count, enumerable.Length);
+            Assert.Equal(orderDtos[0].Id, enumerable.ElementAt(0).Id);
         }
 
         [Fact]
-        public void MapToEntityList_ShouldMapOrderDtoListToOrderList()
+        public void MapToEntityListShouldMapOrderDtoListToOrderList()
         {
             var orderItemDtos = new List<OrderItemDto>
             {
@@ -148,8 +146,9 @@ namespace Pepsi.Tests.Core.Mappers
 
             var result = _mapper.MapToEntityList(orderDtos);
 
-            Assert.Equal(orders.Count, result.Count());
-            Assert.Equal(orders[0].Id, result.ElementAt(0).Id);
+            var enumerable = result as Order[] ?? result.ToArray();
+            Assert.Equal(orders.Count, enumerable.Length);
+            Assert.Equal(orders[0].Id, enumerable.ElementAt(0).Id);
         }
     }
 }

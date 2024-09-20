@@ -1,7 +1,6 @@
 using Pepsi.Core.DTOs;
 using Pepsi.Core.Entity;
 using Pepsi.Core.Mappers;
-using Xunit;
 
 namespace Pepsi.Tests.Core.Mappers
 {
@@ -15,7 +14,7 @@ namespace Pepsi.Tests.Core.Mappers
         }
 
         [Fact]
-        public void MapToDto_ShouldMapClientToClientDto()
+        public void MapToDtoShouldMapClientToClientDto()
         {
             var client = new Client { Id = 1, Name = "Santiago", Region = "Cochabamba", Address = "123" };
 
@@ -28,7 +27,7 @@ namespace Pepsi.Tests.Core.Mappers
         }
 
         [Fact]
-        public void MapToEntity_ShouldMapClientDtoToClient()
+        public void MapToEntityShouldMapClientDtoToClient()
         {
             var clientDto = new ClientDto { Id = 1, Name = "Santiago", Region = "Cochabamba", Address = "123" };
 
@@ -41,7 +40,7 @@ namespace Pepsi.Tests.Core.Mappers
         }
 
         [Fact]
-        public void MapToDtoList_ShouldMapClientListToClientDtoList()
+        public void MapToDtoListShouldMapClientListToClientDtoList()
         {
             var clients = new List<Client>
             {
@@ -51,13 +50,14 @@ namespace Pepsi.Tests.Core.Mappers
 
             var clientDtos = _mapper.MapToDtoList(clients);
 
-            Assert.Equal(clients.Count, clientDtos.Count());
-            Assert.Equal(clients[0].Id, clientDtos.ElementAt(0).Id);
-            Assert.Equal(clients[1].Id, clientDtos.ElementAt(1).Id);
+            var enumerable = clientDtos as ClientDto[] ?? clientDtos.ToArray();
+            Assert.Equal(clients.Count, enumerable.Length);
+            Assert.Equal(clients[0].Id, enumerable.ElementAt(0).Id);
+            Assert.Equal(clients[1].Id, enumerable.ElementAt(1).Id);
         }
 
         [Fact]
-        public void MapToEntityList_ShouldMapClientDtoListToClientList()
+        public void MapToEntityListShouldMapClientDtoListToClientList()
         {
             var clientDtos = new List<ClientDto>
             {
@@ -67,9 +67,10 @@ namespace Pepsi.Tests.Core.Mappers
 
             var clients = _mapper.MapToEntityList(clientDtos);
 
-            Assert.Equal(clientDtos.Count, clients.Count());
-            Assert.Equal(clientDtos[0].Id, clients.ElementAt(0).Id);
-            Assert.Equal(clientDtos[1].Id, clients.ElementAt(1).Id);
+            var enumerable = clients as Client[] ?? clients.ToArray();
+            Assert.Equal(clientDtos.Count, enumerable.Length);
+            Assert.Equal(clientDtos[0].Id, enumerable.ElementAt(0).Id);
+            Assert.Equal(clientDtos[1].Id, enumerable.ElementAt(1).Id);
         }
     }
 }

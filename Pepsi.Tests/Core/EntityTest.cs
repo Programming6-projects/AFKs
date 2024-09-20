@@ -1,4 +1,3 @@
-using Xunit;
 using Pepsi.Core.Entity;
 
 namespace Pepsi.Tests.Core

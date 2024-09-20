@@ -1,9 +1,6 @@
 using Pepsi.Core.DTOs;
 using Pepsi.Core.Entity;
 using Pepsi.Core.Mappers;
-using Xunit;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Pepsi.Tests.Core.Mappers
 {
@@ -17,7 +14,7 @@ namespace Pepsi.Tests.Core.Mappers
         }
 
         [Fact]
-        public void MapToDto_ShouldMapVehicleToVehicleDto()
+        public void MapToDtoShouldMapVehicleToVehicleDto()
         {
             var vehicle = new Vehicle { Id = 1, Type = "Truck", Capacity = 1000.5m, IsAvailable = true };
 
@@ -30,7 +27,7 @@ namespace Pepsi.Tests.Core.Mappers
         }
 
         [Fact]
-        public void MapToEntity_ShouldMapVehicleDtoToVehicle()
+        public void MapToEntityShouldMapVehicleDtoToVehicle()
         {
             var vehicleDto = new VehicleDto { Id = 1, Type = "Truck", Capacity = 1000.5m, IsAvailable = true };
 
@@ -43,7 +40,7 @@ namespace Pepsi.Tests.Core.Mappers
         }
 
         [Fact]
-        public void MapToDtoList_ShouldMapVehicleListToVehicleDtoList()
+        public void MapToDtoListShouldMapVehicleListToVehicleDtoList()
         {
             var vehicles = new List<Vehicle>
             {
@@ -53,13 +50,14 @@ namespace Pepsi.Tests.Core.Mappers
 
             var vehicleDtos = _mapper.MapToDtoList(vehicles);
 
-            Assert.Equal(vehicles.Count(), vehicleDtos.Count());
-            Assert.Equal(vehicles[0].Id, vehicleDtos.ElementAt(0).Id);
-            Assert.Equal(vehicles[1].Id, vehicleDtos.ElementAt(1).Id);
+            var enumerable = vehicleDtos as VehicleDto[] ?? vehicleDtos.ToArray();
+            Assert.Equal(vehicles.Count, enumerable.Length);
+            Assert.Equal(vehicles[0].Id, enumerable.ElementAt(0).Id);
+            Assert.Equal(vehicles[1].Id, enumerable.ElementAt(1).Id);
         }
 
         [Fact]
-        public void MapToEntityList_ShouldMapVehicleDtoListToVehicleList()
+        public void MapToEntityListShouldMapVehicleDtoListToVehicleList()
         {
             var vehicleDtos = new List<VehicleDto>
             {
@@ -69,9 +67,10 @@ namespace Pepsi.Tests.Core.Mappers
 
             var vehicles = _mapper.MapToEntityList(vehicleDtos);
 
-            Assert.Equal(vehicleDtos.Count(), vehicles.Count());
-            Assert.Equal(vehicleDtos[0].Id, vehicles.ElementAt(0).Id);
-            Assert.Equal(vehicleDtos[1].Id, vehicles.ElementAt(1).Id);
+            var enumerable = vehicles as Vehicle[] ?? vehicles.ToArray();
+            Assert.Equal(vehicleDtos.Count, enumerable.Length);
+            Assert.Equal(vehicleDtos[0].Id, enumerable.ElementAt(0).Id);
+            Assert.Equal(vehicleDtos[1].Id, enumerable.ElementAt(1).Id);
         }
     }
 }

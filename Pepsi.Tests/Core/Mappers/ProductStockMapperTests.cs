@@ -1,9 +1,6 @@
 using Pepsi.Core.DTOs;
 using Pepsi.Core.Entity;
 using Pepsi.Core.Mappers;
-using Xunit;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Pepsi.Tests.Core.Mappers
 {
@@ -17,7 +14,7 @@ namespace Pepsi.Tests.Core.Mappers
         }
 
         [Fact]
-        public void MapToDto_ShouldMapProductStockToProductStockDto()
+        public void MapToDtoShouldMapProductStockToProductStockDto()
         {
             var productStock = new ProductStock { Id = 1, QuantityOnHand = 100, QuantitySold = 50, QuantityReserved = 20, ProductId = 1 };
 
@@ -31,7 +28,7 @@ namespace Pepsi.Tests.Core.Mappers
         }
 
         [Fact]
-        public void MapToEntity_ShouldMapProductStockDtoToProductStock()
+        public void MapToEntityShouldMapProductStockDtoToProductStock()
         {
             var productStockDto = new ProductStockDto { Id = 1, QuantityOnHand = 100, QuantitySold = 50, QuantityReserved = 20, ProductId = 1 };
 
@@ -45,7 +42,7 @@ namespace Pepsi.Tests.Core.Mappers
         }
 
         [Fact]
-        public void MapToDtoList_ShouldMapProductStockListToProductStockDtoList()
+        public void MapToDtoListShouldMapProductStockListToProductStockDtoList()
         {
             var productStocks = new List<ProductStock>
             {
@@ -55,13 +52,14 @@ namespace Pepsi.Tests.Core.Mappers
 
             var productStockDtos = _mapper.MapToDtoList(productStocks);
 
-            Assert.Equal(productStocks.Count(), productStockDtos.Count());
-            Assert.Equal(productStocks[0].Id, productStockDtos.ElementAt(0).Id);
-            Assert.Equal(productStocks[1].Id, productStockDtos.ElementAt(1).Id);
+            var stockDtos = productStockDtos as ProductStockDto[] ?? productStockDtos.ToArray();
+            Assert.Equal(productStocks.Count, stockDtos.Length);
+            Assert.Equal(productStocks[0].Id, stockDtos.ElementAt(0).Id);
+            Assert.Equal(productStocks[1].Id, stockDtos.ElementAt(1).Id);
         }
 
         [Fact]
-        public void MapToEntityList_ShouldMapProductStockDtoListToProductStockList()
+        public void MapToEntityListShouldMapProductStockDtoListToProductStockList()
         {
             var productStockDtos = new List<ProductStockDto>
             {
@@ -71,9 +69,10 @@ namespace Pepsi.Tests.Core.Mappers
 
             var productStocks = _mapper.MapToEntityList(productStockDtos);
 
-            Assert.Equal(productStockDtos.Count(), productStocks.Count());
-            Assert.Equal(productStockDtos[0].Id, productStocks.ElementAt(0).Id);
-            Assert.Equal(productStockDtos[1].Id, productStocks.ElementAt(1).Id);
+            var enumerable = productStocks as ProductStock[] ?? productStocks.ToArray();
+            Assert.Equal(productStockDtos.Count, enumerable.Length);
+            Assert.Equal(productStockDtos[0].Id, enumerable.ElementAt(0).Id);
+            Assert.Equal(productStockDtos[1].Id, enumerable.ElementAt(1).Id);
         }
     }
 }

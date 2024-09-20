@@ -1,9 +1,6 @@
 using Pepsi.Core.DTOs;
 using Pepsi.Core.Entity;
 using Pepsi.Core.Mappers;
-using Xunit;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Pepsi.Tests.Core.Mappers
 {
@@ -17,7 +14,7 @@ namespace Pepsi.Tests.Core.Mappers
         }
 
         [Fact]
-        public void MapToDto_ShouldMapProductToProductDto()
+        public void MapToDtoShouldMapProductToProductDto()
         {
             var product = new Product { Id = 1, Name = "Pepsi", Price = 99.99m, Weight = 1.5m };
 
@@ -30,7 +27,7 @@ namespace Pepsi.Tests.Core.Mappers
         }
 
         [Fact]
-        public void MapToEntity_ShouldMapProductDtoToProduct()
+        public void MapToEntityShouldMapProductDtoToProduct()
         {
             var productDto = new ProductDto { Id = 1, Name = "Pepsi", Price = 99.99m, Weight = 1.5m };
 
@@ -43,7 +40,7 @@ namespace Pepsi.Tests.Core.Mappers
         }
 
         [Fact]
-        public void MapToDtoList_ShouldMapProductListToProductDtoList()
+        public void MapToDtoListShouldMapProductListToProductDtoList()
         {
             var products = new List<Product>
             {
@@ -53,13 +50,14 @@ namespace Pepsi.Tests.Core.Mappers
 
             var productDtos = _mapper.MapToDtoList(products);
 
-            Assert.Equal(products.Count, productDtos.Count());
-            Assert.Equal(products[0].Id, productDtos.ElementAt(0).Id);
-            Assert.Equal(products[1].Id, productDtos.ElementAt(1).Id);
+            var enumerable = productDtos as ProductDto[] ?? productDtos.ToArray();
+            Assert.Equal(products.Count, enumerable.Length);
+            Assert.Equal(products[0].Id, enumerable.ElementAt(0).Id);
+            Assert.Equal(products[1].Id, enumerable.ElementAt(1).Id);
         }
 
         [Fact]
-        public void MapToEntityList_ShouldMapProductDtoListToProductList()
+        public void MapToEntityListShouldMapProductDtoListToProductList()
         {
             var productDtos = new List<ProductDto>
             {
@@ -69,9 +67,10 @@ namespace Pepsi.Tests.Core.Mappers
 
             var products = _mapper.MapToEntityList(productDtos);
 
-            Assert.Equal(productDtos.Count, products.Count());
-            Assert.Equal(productDtos[0].Id, products.ElementAt(0).Id);
-            Assert.Equal(productDtos[1].Id, products.ElementAt(1).Id);
+            var enumerable = products as Product[] ?? products.ToArray();
+            Assert.Equal(productDtos.Count, enumerable.Length);
+            Assert.Equal(productDtos[0].Id, enumerable.ElementAt(0).Id);
+            Assert.Equal(productDtos[1].Id, enumerable.ElementAt(1).Id);
         }
     }
 }

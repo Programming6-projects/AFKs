@@ -1,5 +1,3 @@
-using Microsoft.Extensions.Logging;
-using Xunit;
 using Pepsi.Core.Services;
 using Pepsi.Core.Entity;
 using Moq;
@@ -7,8 +5,6 @@ using Pepsi.Core.Interfaces.Repositories;
 using Pepsi.Core.Interfaces.Mappers;
 using Pepsi.Core.DTOs;
 using Pepsi.Core.Interfaces.Services;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace Pepsi.Tests.Core
 {
@@ -24,12 +20,12 @@ namespace Pepsi.Tests.Core
             var client = new Client { Id = 1, Name = "Santiago", Address = "Av Sin Nombre", Region = "Cochabamba" };
             var clientDto = new ClientDto { Id = 1, Name = "Santiago", Address = "Av Sin Nombre", Region = "Cochabamba" };
             mockMapper.Setup(m => m.MapToDto(client)).Returns(clientDto);
-            var result = await clientService.AddAsync(clientDto);
+            var result = await clientService.AddAsync(clientDto).ConfigureAwait(false);
             Assert.True(result == 0);
         }
 
         [Fact]
-        public async Task GetAllAsync_ShouldReturnAllClients()
+        public async Task GetAllAsyncShouldReturnAllClients()
         {
             var mockRepository = new Mock<IClientRepository>();
             var mockMapper = new Mock<IMapper<Client, ClientDto>>();
@@ -39,13 +35,13 @@ namespace Pepsi.Tests.Core
             mockRepository.Setup(repo => repo.GetAllAsync()).ReturnsAsync(clients);
             mockMapper.Setup(mapper => mapper.MapToDtoList(clients)).Returns(clientDtos);
 
-            var result = await clientService.GetAllAsync();
+            var result = await clientService.GetAllAsync().ConfigureAwait(false);
 
             Assert.Equal(clientDtos, result);
         }
 
         [Fact]
-        public async Task GetByIdAsync_ShouldReturnClient_WhenClientExists()
+        public async Task GetByIdAsyncShouldReturnClientWhenClientExists()
         {
             var mockRepository = new Mock<IClientRepository>();
             var mockMapper = new Mock<IMapper<Client, ClientDto>>();
@@ -55,26 +51,26 @@ namespace Pepsi.Tests.Core
             mockRepository.Setup(repo => repo.GetByIdAsync(1)).ReturnsAsync(client);
             mockMapper.Setup(mapper => mapper.MapToDto(client)).Returns(clientDto);
 
-            var result = await clientService.GetByIdAsync(1);
+            var result = await clientService.GetByIdAsync(1).ConfigureAwait(false);
 
             Assert.Equal(clientDto, result);
         }
 
         [Fact]
-        public async Task GetByIdAsync_ShouldReturnNull_WhenClientDoesNotExist()
+        public async Task GetByIdAsyncShouldReturnNullWhenClientDoesNotExist()
         {
             var mockRepository = new Mock<IClientRepository>();
             var mockMapper = new Mock<IMapper<Client, ClientDto>>();
             var clientService = new ClientService(mockRepository.Object, mockMapper.Object);
-            mockRepository.Setup(repo => repo.GetByIdAsync(1)).ReturnsAsync((Client)null);
+            mockRepository.Setup(repo => repo.GetByIdAsync(1)).ReturnsAsync((Client)null!);
 
-            var result = await clientService.GetByIdAsync(1);
+            var result = await clientService.GetByIdAsync(1).ConfigureAwait(false);
 
             Assert.Null(result);
         }
 
         [Fact]
-        public async Task GetClientsByRegionAsync_ShouldReturnClients_WhenClientsExist()
+        public async Task GetClientsByRegionAsyncShouldReturnClientsWhenClientsExist()
         {
             var mockRepository = new Mock<IClientRepository>();
             var mockMapper = new Mock<IMapper<Client, ClientDto>>();
@@ -84,13 +80,13 @@ namespace Pepsi.Tests.Core
             mockRepository.Setup(repo => repo.GetClientsByRegionAsync("Cochabamba")).ReturnsAsync(clients);
             mockMapper.Setup(mapper => mapper.MapToDtoList(clients)).Returns(clientDtos);
 
-            var result = await clientService.GetClientsByRegionAsync("Cochabamba");
+            var result = await clientService.GetClientsByRegionAsync("Cochabamba").ConfigureAwait(false);
 
             Assert.Equal(clientDtos, result);
         }
 
         [Fact]
-        public async Task UpdateAsync_ShouldUpdateClient()
+        public async Task UpdateAsyncShouldUpdateClient()
         {
             var mockRepository = new Mock<IClientRepository>();
             var mockMapper = new Mock<IMapper<Client, ClientDto>>();
@@ -99,19 +95,19 @@ namespace Pepsi.Tests.Core
             var client = new Client { Id = 1, Name = "Santiago", Address = "Av Sin Nombre", Region = "Cochabamba" };
             mockMapper.Setup(m => m.MapToEntity(clientDto)).Returns(client);
 
-            await clientService.UpdateAsync(clientDto);
+            await clientService.UpdateAsync(clientDto).ConfigureAwait(false);
 
             mockRepository.Verify(repo => repo.UpdateAsync(client), Times.Once);
         }
 
         [Fact]
-        public async Task DeleteAsync_ShouldDeleteClient()
+        public async Task DeleteAsyncShouldDeleteClient()
         {
             var mockRepository = new Mock<IClientRepository>();
             var mockMapper = new Mock<IMapper<Client, ClientDto>>();
             var clientService = new ClientService(mockRepository.Object, mockMapper.Object);
 
-            await clientService.DeleteAsync(1);
+            await clientService.DeleteAsync(1).ConfigureAwait(false);
 
             mockRepository.Verify(repo => repo.DeleteAsync(1), Times.Once);
         }
@@ -119,7 +115,7 @@ namespace Pepsi.Tests.Core
         //----------------------------------------
         //Order
         [Fact]
-        public async Task GetAllAsync_ShouldReturnAllOrders()
+        public async Task GetAllAsyncShouldReturnAllOrders()
         {
             var mockRepository = new Mock<IOrderRepository>();
             var mockMapper = new Mock<IMapper<Order, OrderDto>>();
@@ -132,13 +128,13 @@ namespace Pepsi.Tests.Core
             mockRepository.Setup(repo => repo.GetAllAsync()).ReturnsAsync(orders);
             mockMapper.Setup(mapper => mapper.MapToDtoList(orders)).Returns(orderDtos);
 
-            var result = await orderService.GetAllAsync();
+            var result = await orderService.GetAllAsync().ConfigureAwait(false);
 
             Assert.Equal(orderDtos, result);
         }
 
         [Fact]
-        public async Task GetByIdAsync_ShouldReturnOrder_WhenOrderExists()
+        public async Task GetByIdAsyncShouldReturnOrderWhenOrderExists()
         {
             var mockRepository = new Mock<IOrderRepository>();
             var mockMapper = new Mock<IMapper<Order, OrderDto>>();
@@ -151,13 +147,13 @@ namespace Pepsi.Tests.Core
             mockRepository.Setup(repo => repo.GetByIdAsync(1)).ReturnsAsync(order);
             mockMapper.Setup(mapper => mapper.MapToDto(order)).Returns(orderDto);
 
-            var result = await orderService.GetByIdAsync(1);
+            var result = await orderService.GetByIdAsync(1).ConfigureAwait(false);
 
             Assert.Equal(orderDto, result);
         }
 
         [Fact]
-        public async Task GetByIdAsync_ShouldReturnNull_WhenOrderDoesNotExist()
+        public async Task GetByIdAsyncShouldReturnNullWhenOrderDoesNotExist()
         {
             var mockRepository = new Mock<IOrderRepository>();
             var mockMapper = new Mock<IMapper<Order, OrderDto>>();
@@ -165,15 +161,15 @@ namespace Pepsi.Tests.Core
             var mockVehicleService = new Mock<IVehicleService>();
             var mockOrderItemService = new Mock<IOrderItemService>();
             var orderService = new OrderService(mockRepository.Object, mockMapper.Object, mockClientService.Object, mockVehicleService.Object, mockOrderItemService.Object);
-            mockRepository.Setup(repo => repo.GetByIdAsync(1)).ReturnsAsync((Order)null);
+            mockRepository.Setup(repo => repo.GetByIdAsync(1)).ReturnsAsync((Order)null!);
 
-            var result = await orderService.GetByIdAsync(1);
+            var result = await orderService.GetByIdAsync(1).ConfigureAwait(false);
 
             Assert.Null(result);
         }
 
         [Fact]
-        public async Task AddAsync_ShouldAddOrder()
+        public async Task AddAsyncShouldAddOrder()
         {
             var mockRepository = new Mock<IOrderRepository>();
             var mockMapper = new Mock<IMapper<Order, OrderDto>>();
@@ -186,13 +182,13 @@ namespace Pepsi.Tests.Core
             mockMapper.Setup(m => m.MapToEntity(orderDto)).Returns(order);
             mockRepository.Setup(repo => repo.AddAsync(order)).ReturnsAsync(1);
 
-            var result = await orderService.AddAsync(orderDto);
+            var result = await orderService.AddAsync(orderDto).ConfigureAwait(false);
 
             Assert.Equal(1, result);
         }
 
         [Fact]
-        public async Task UpdateAsync_ShouldUpdateOrder()
+        public async Task UpdateAsyncShouldUpdateOrder()
         {
             var mockRepository = new Mock<IOrderRepository>();
             var mockMapper = new Mock<IMapper<Order, OrderDto>>();
@@ -204,13 +200,13 @@ namespace Pepsi.Tests.Core
             var order = new Order { Id = 1, ClientId = 1, VehicleId = 1 };
             mockMapper.Setup(m => m.MapToEntity(orderDto)).Returns(order);
 
-            await orderService.UpdateAsync(orderDto);
+            await orderService.UpdateAsync(orderDto).ConfigureAwait(false);
 
             mockRepository.Verify(repo => repo.UpdateAsync(order), Times.Once);
         }
 
         [Fact]
-        public async Task DeleteAsync_ShouldDeleteOrder()
+        public async Task DeleteAsyncShouldDeleteOrder()
         {
             var mockRepository = new Mock<IOrderRepository>();
             var mockMapper = new Mock<IMapper<Order, OrderDto>>();
@@ -219,13 +215,13 @@ namespace Pepsi.Tests.Core
             var mockOrderItemService = new Mock<IOrderItemService>();
             var orderService = new OrderService(mockRepository.Object, mockMapper.Object, mockClientService.Object, mockVehicleService.Object, mockOrderItemService.Object);
 
-            await orderService.DeleteAsync(1);
+            await orderService.DeleteAsync(1).ConfigureAwait(false);
 
             mockRepository.Verify(repo => repo.DeleteAsync(1), Times.Once);
         }
 
         [Fact]
-        public async Task GetOrdersByClientIdAsync_ShouldReturnOrders_WhenOrdersExist()
+        public async Task GetOrdersByClientIdAsyncShouldReturnOrdersWhenOrdersExist()
         {
             var mockRepository = new Mock<IOrderRepository>();
             var mockMapper = new Mock<IMapper<Order, OrderDto>>();
@@ -238,7 +234,7 @@ namespace Pepsi.Tests.Core
             mockRepository.Setup(repo => repo.GetOrdersByClientIdAsync(1)).ReturnsAsync(orders);
             mockMapper.Setup(mapper => mapper.MapToDtoList(orders)).Returns(orderDtos);
 
-            var result = await orderService.GetOrdersByClientIdAsync(1);
+            var result = await orderService.GetOrdersByClientIdAsync(1).ConfigureAwait(false);
 
             Assert.Equal(orderDtos, result);
         }
@@ -246,7 +242,7 @@ namespace Pepsi.Tests.Core
         //----------------------------------------
         //orderItem
         [Fact]
-        public async Task GetAllAsync_ShouldReturnAllOrderItems()
+        public async Task GetAllAsyncShouldReturnAllOrderItems()
         {
             var mockRepository = new Mock<IOrderItemRepository>();
             var mockMapper = new Mock<IMapper<OrderItem, OrderItemDto>>();
@@ -256,13 +252,13 @@ namespace Pepsi.Tests.Core
             mockRepository.Setup(repo => repo.GetAllAsync()).ReturnsAsync(orderItems);
             mockMapper.Setup(mapper => mapper.MapToDtoList(orderItems)).Returns(orderItemDtos);
 
-            var result = await orderItemService.GetAllAsync();
+            var result = await orderItemService.GetAllAsync().ConfigureAwait(false);
 
             Assert.Equal(orderItemDtos, result);
         }
 
         [Fact]
-        public async Task GetByIdAsync_ShouldReturnOrderItem_WhenOrderItemExists()
+        public async Task GetByIdAsyncShouldReturnOrderItemWhenOrderItemExists()
         {
             var mockRepository = new Mock<IOrderItemRepository>();
             var mockMapper = new Mock<IMapper<OrderItem, OrderItemDto>>();
@@ -272,26 +268,26 @@ namespace Pepsi.Tests.Core
             mockRepository.Setup(repo => repo.GetByIdAsync(1)).ReturnsAsync(orderItem);
             mockMapper.Setup(mapper => mapper.MapToDto(orderItem)).Returns(orderItemDto);
 
-            var result = await orderItemService.GetByIdAsync(1);
+            var result = await orderItemService.GetByIdAsync(1).ConfigureAwait(false);
 
             Assert.Equal(orderItemDto, result);
         }
 
         [Fact]
-        public async Task GetByIdAsync_ShouldReturnNull_WhenOrderItemDoesNotExist()
+        public async Task GetByIdAsyncShouldReturnNullWhenOrderItemDoesNotExist()
         {
             var mockRepository = new Mock<IOrderItemRepository>();
             var mockMapper = new Mock<IMapper<OrderItem, OrderItemDto>>();
             var orderItemService = new OrderItemService(mockRepository.Object, mockMapper.Object);
-            mockRepository.Setup(repo => repo.GetByIdAsync(1)).ReturnsAsync((OrderItem)null);
+            mockRepository.Setup(repo => repo.GetByIdAsync(1)).ReturnsAsync((OrderItem)null!);
 
-            var result = await orderItemService.GetByIdAsync(1);
+            var result = await orderItemService.GetByIdAsync(1).ConfigureAwait(false);
 
             Assert.Null(result);
         }
 
         [Fact]
-        public async Task AddAsync_ShouldAddOrderItem()
+        public async Task AddAsyncShouldAddOrderItem()
         {
             var mockRepository = new Mock<IOrderItemRepository>();
             var mockMapper = new Mock<IMapper<OrderItem, OrderItemDto>>();
@@ -301,13 +297,13 @@ namespace Pepsi.Tests.Core
             mockMapper.Setup(m => m.MapToEntity(orderItemDto)).Returns(orderItem);
             mockRepository.Setup(repo => repo.AddAsync(orderItem)).ReturnsAsync(1);
 
-            var result = await orderItemService.AddAsync(orderItemDto);
+            var result = await orderItemService.AddAsync(orderItemDto).ConfigureAwait(false);
 
             Assert.Equal(1, result);
         }
 
         [Fact]
-        public async Task UpdateAsync_ShouldUpdateOrderItem()
+        public async Task UpdateAsyncShouldUpdateOrderItem()
         {
             var mockRepository = new Mock<IOrderItemRepository>();
             var mockMapper = new Mock<IMapper<OrderItem, OrderItemDto>>();
@@ -316,25 +312,25 @@ namespace Pepsi.Tests.Core
             var orderItem = new OrderItem { Id = 1, OrderId = 1, ProductId = 1, Quantity = 10, UnitPrice = 1000.5m };
             mockMapper.Setup(m => m.MapToEntity(orderItemDto)).Returns(orderItem);
 
-            await orderItemService.UpdateAsync(orderItemDto);
+            await orderItemService.UpdateAsync(orderItemDto).ConfigureAwait(false);
 
             mockRepository.Verify(repo => repo.UpdateAsync(orderItem), Times.Once);
         }
 
         [Fact]
-        public async Task DeleteAsync_ShouldDeleteOrderItem()
+        public async Task DeleteAsyncShouldDeleteOrderItem()
         {
             var mockRepository = new Mock<IOrderItemRepository>();
             var mockMapper = new Mock<IMapper<OrderItem, OrderItemDto>>();
             var orderItemService = new OrderItemService(mockRepository.Object, mockMapper.Object);
 
-            await orderItemService.DeleteAsync(1);
+            await orderItemService.DeleteAsync(1).ConfigureAwait(false);
 
             mockRepository.Verify(repo => repo.DeleteAsync(1), Times.Once);
         }
 
         [Fact]
-        public async Task GetOrderItemsByOrderIdAsync_ShouldReturnOrderItems_WhenOrderItemsExist()
+        public async Task GetOrderItemsByOrderIdAsyncShouldReturnOrderItemsWhenOrderItemsExist()
         {
             var mockRepository = new Mock<IOrderItemRepository>();
             var mockMapper = new Mock<IMapper<OrderItem, OrderItemDto>>();
@@ -344,7 +340,7 @@ namespace Pepsi.Tests.Core
             mockRepository.Setup(repo => repo.GetOrderItemsByOrderIdAsync(1)).ReturnsAsync(orderItems);
             mockMapper.Setup(mapper => mapper.MapToDtoList(orderItems)).Returns(orderItemDtos);
 
-            var result = await orderItemService.GetOrderItemsByOrderIdAsync(1);
+            var result = await orderItemService.GetOrderItemsByOrderIdAsync(1).ConfigureAwait(false);
 
             Assert.Equal(orderItemDtos, result);
         }
@@ -352,7 +348,7 @@ namespace Pepsi.Tests.Core
         //----------------------------------------
         //Vehicle
         [Fact]
-        public async Task GetAllAsync_ShouldReturnAllVehicles()
+        public async Task GetAllAsyncShouldReturnAllVehicles()
         {
             var mockRepository = new Mock<IVehicleRepository>();
             var mockMapper = new Mock<IMapper<Vehicle, VehicleDto>>();
@@ -362,13 +358,13 @@ namespace Pepsi.Tests.Core
             mockRepository.Setup(repo => repo.GetAllAsync()).ReturnsAsync(vehicles);
             mockMapper.Setup(mapper => mapper.MapToDtoList(vehicles)).Returns(vehicleDtos);
 
-            var result = await vehicleService.GetAllAsync();
+            var result = await vehicleService.GetAllAsync().ConfigureAwait(false);
 
             Assert.Equal(vehicleDtos, result);
         }
 
         [Fact]
-        public async Task GetByIdAsync_ShouldReturnVehicle_WhenVehicleExists()
+        public async Task GetByIdAsyncShouldReturnVehicleWhenVehicleExists()
         {
             var mockRepository = new Mock<IVehicleRepository>();
             var mockMapper = new Mock<IMapper<Vehicle, VehicleDto>>();
@@ -378,26 +374,26 @@ namespace Pepsi.Tests.Core
             mockRepository.Setup(repo => repo.GetByIdAsync(1)).ReturnsAsync(vehicle);
             mockMapper.Setup(mapper => mapper.MapToDto(vehicle)).Returns(vehicleDto);
 
-            var result = await vehicleService.GetByIdAsync(1);
+            var result = await vehicleService.GetByIdAsync(1).ConfigureAwait(false);
 
             Assert.Equal(vehicleDto, result);
         }
 
         [Fact]
-        public async Task GetByIdAsync_ShouldReturnNull_WhenVehicleDoesNotExist()
+        public async Task GetByIdAsyncShouldReturnNullWhenVehicleDoesNotExist()
         {
             var mockRepository = new Mock<IVehicleRepository>();
             var mockMapper = new Mock<IMapper<Vehicle, VehicleDto>>();
             var vehicleService = new VehicleService(mockRepository.Object, mockMapper.Object);
-            mockRepository.Setup(repo => repo.GetByIdAsync(1)).ReturnsAsync((Vehicle)null);
+            mockRepository.Setup(repo => repo.GetByIdAsync(1)).ReturnsAsync((Vehicle)null!);
 
-            var result = await vehicleService.GetByIdAsync(1);
+            var result = await vehicleService.GetByIdAsync(1).ConfigureAwait(false);
 
             Assert.Null(result);
         }
 
         [Fact]
-        public async Task GetAvailableVehiclesAsync_ShouldReturnAvailableVehicles()
+        public async Task GetAvailableVehiclesAsyncShouldReturnAvailableVehicles()
         {
             var mockRepository = new Mock<IVehicleRepository>();
             var mockMapper = new Mock<IMapper<Vehicle, VehicleDto>>();
@@ -407,13 +403,13 @@ namespace Pepsi.Tests.Core
             mockRepository.Setup(repo => repo.GetAvailableVehiclesAsync()).ReturnsAsync(vehicles);
             mockMapper.Setup(mapper => mapper.MapToDtoList(vehicles)).Returns(vehicleDtos);
 
-            var result = await vehicleService.GetAvailableVehiclesAsync();
+            var result = await vehicleService.GetAvailableVehiclesAsync().ConfigureAwait(false);
 
             Assert.Equal(vehicleDtos, result);
         }
 
         [Fact]
-        public async Task AddAsync_ShouldAddVehicle()
+        public async Task AddAsyncShouldAddVehicle()
         {
             var mockRepository = new Mock<IVehicleRepository>();
             var mockMapper = new Mock<IMapper<Vehicle, VehicleDto>>();
@@ -423,13 +419,13 @@ namespace Pepsi.Tests.Core
             mockMapper.Setup(m => m.MapToEntity(vehicleDto)).Returns(vehicle);
             mockRepository.Setup(repo => repo.AddAsync(vehicle)).ReturnsAsync(1);
 
-            var result = await vehicleService.AddAsync(vehicleDto);
+            var result = await vehicleService.AddAsync(vehicleDto).ConfigureAwait(false);
 
             Assert.Equal(1, result);
         }
 
         [Fact]
-        public async Task UpdateAsync_ShouldUpdateVehicle()
+        public async Task UpdateAsyncShouldUpdateVehicle()
         {
             var mockRepository = new Mock<IVehicleRepository>();
             var mockMapper = new Mock<IMapper<Vehicle, VehicleDto>>();
@@ -438,19 +434,19 @@ namespace Pepsi.Tests.Core
             var vehicle = new Vehicle { Id = 1, Type = "Truck", Capacity = 1000.5m };
             mockMapper.Setup(m => m.MapToEntity(vehicleDto)).Returns(vehicle);
 
-            await vehicleService.UpdateAsync(vehicleDto);
+            await vehicleService.UpdateAsync(vehicleDto).ConfigureAwait(false);
 
             mockRepository.Verify(repo => repo.UpdateAsync(vehicle), Times.Once);
         }
 
         [Fact]
-        public async Task DeleteAsync_ShouldDeleteVehicle()
+        public async Task DeleteAsyncShouldDeleteVehicle()
         {
             var mockRepository = new Mock<IVehicleRepository>();
             var mockMapper = new Mock<IMapper<Vehicle, VehicleDto>>();
             var vehicleService = new VehicleService(mockRepository.Object, mockMapper.Object);
 
-            await vehicleService.DeleteAsync(1);
+            await vehicleService.DeleteAsync(1).ConfigureAwait(false);
 
             mockRepository.Verify(repo => repo.DeleteAsync(1), Times.Once);
         }
@@ -458,7 +454,7 @@ namespace Pepsi.Tests.Core
         //----------------------------------------
         //Product
         [Fact]
-        public async Task GetAllAsync_ShouldReturnAllProducts()
+        public async Task GetAllAsyncShouldReturnAllProducts()
         {
             var mockProductRepository = new Mock<IProductRepository>();
             var mockProductStockService = new Mock<IProductStockService>();
@@ -470,13 +466,13 @@ namespace Pepsi.Tests.Core
             mockProductRepository.Setup(repo => repo.GetAllAsync()).ReturnsAsync(products);
             mockProductMapper.Setup(mapper => mapper.MapToDtoList(products)).Returns(productDtos);
 
-            var result = await productService.GetAllAsync();
+            var result = await productService.GetAllAsync().ConfigureAwait(false);
 
             Assert.Equal(productDtos, result);
         }
 
         [Fact]
-        public async Task GetByIdAsync_ShouldReturnProduct_WhenProductExists()
+        public async Task GetByIdAsyncShouldReturnProductWhenProductExists()
         {
             var mockProductRepository = new Mock<IProductRepository>();
             var mockProductStockService = new Mock<IProductStockService>();
@@ -488,28 +484,28 @@ namespace Pepsi.Tests.Core
             mockProductRepository.Setup(repo => repo.GetByIdAsync(1)).ReturnsAsync(product);
             mockProductMapper.Setup(mapper => mapper.MapToDto(product)).Returns(productDto);
 
-            var result = await productService.GetByIdAsync(1);
+            var result = await productService.GetByIdAsync(1).ConfigureAwait(false);
 
             Assert.Equal(productDto, result);
         }
 
         [Fact]
-        public async Task GetByIdAsync_ShouldReturnNull_WhenProductDoesNotExist()
+        public async Task GetByIdAsyncShouldReturnNullWhenProductDoesNotExist()
         {
             var mockProductRepository = new Mock<IProductRepository>();
             var mockProductStockService = new Mock<IProductStockService>();
             var mockProductMapper = new Mock<IMapper<Product, ProductDto>>();
             var mockStockMapper = new Mock<IMapper<ProductStock, ProductStockDto>>();
             var productService = new ProductService(mockProductRepository.Object, mockProductStockService.Object, mockProductMapper.Object, mockStockMapper.Object);
-            mockProductRepository.Setup(repo => repo.GetByIdAsync(1)).ReturnsAsync((Product)null);
+            mockProductRepository.Setup(repo => repo.GetByIdAsync(1)).ReturnsAsync((Product)null!);
 
-            var result = await productService.GetByIdAsync(1);
+            var result = await productService.GetByIdAsync(1).ConfigureAwait(false);
 
             Assert.Null(result);
         }
 
         [Fact]
-        public async Task GetProductsByNameAsync_ShouldReturnProducts_WhenProductsExist()
+        public async Task GetProductsByNameAsyncShouldReturnProductsWhenProductsExist()
         {
             var mockProductRepository = new Mock<IProductRepository>();
             var mockProductStockService = new Mock<IProductStockService>();
@@ -521,13 +517,13 @@ namespace Pepsi.Tests.Core
             mockProductRepository.Setup(repo => repo.GetProductsByNameAsync("Pepsi")).ReturnsAsync(products);
             mockProductMapper.Setup(mapper => mapper.MapToDtoList(products)).Returns(productDtos);
 
-            var result = await productService.GetProductsByNameAsync("Pepsi");
+            var result = await productService.GetProductsByNameAsync("Pepsi").ConfigureAwait(false);
 
             Assert.Equal(productDtos, result);
         }
 
         [Fact]
-        public async Task GetAllProductsWithStockAsync_ShouldReturnProductsWithStock()
+        public async Task GetAllProductsWithStockAsyncShouldReturnProductsWithStock()
         {
             var mockProductRepository = new Mock<IProductRepository>();
             var mockProductStockService = new Mock<IProductStockService>();
@@ -540,14 +536,15 @@ namespace Pepsi.Tests.Core
             mockProductMapper.Setup(mapper => mapper.MapToDto(products[0])).Returns(productWithStockDto);
             mockProductStockService.Setup(service => service.GetStockByProductIdAsync(1)).ReturnsAsync(new ProductStockDto());
 
-            var result = await productService.GetAllProductsWithStockAsync();
+            var result = await productService.GetAllProductsWithStockAsync().ConfigureAwait(false);
 
-            Assert.Single(result);
-            Assert.Equal(productWithStockDto, result.First());
+            var productWithStockDtos = result as ProductWithStockDto[] ?? result.ToArray();
+            Assert.Single(productWithStockDtos);
+            Assert.Equal(productWithStockDto, productWithStockDtos.First());
         }
 
         [Fact]
-        public async Task GetProductByIdWithStockAsync_ShouldReturnProductWithStock_WhenProductExists()
+        public async Task GetProductByIdWithStockAsyncShouldReturnProductWithStockWhenProductExists()
         {
             var mockProductRepository = new Mock<IProductRepository>();
             var mockProductStockService = new Mock<IProductStockService>();
@@ -560,29 +557,29 @@ namespace Pepsi.Tests.Core
             mockProductMapper.Setup(mapper => mapper.MapToDto(product)).Returns(productWithStockDto);
             mockProductStockService.Setup(service => service.GetStockByProductIdAsync(1)).ReturnsAsync(new ProductStockDto());
 
-            var result = await productService.GetProductByIdWithStockAsync(1);
+            var result = await productService.GetProductByIdWithStockAsync(1).ConfigureAwait(false);
 
             Assert.Equal(productWithStockDto, result);
         }
 
         [Fact]
-        public async Task GetProductByIdWithStockAsync_ShouldReturnNull_WhenProductDoesNotExist()
+        public async Task GetProductByIdWithStockAsyncShouldReturnNullWhenProductDoesNotExist()
         {
             var mockProductRepository = new Mock<IProductRepository>();
             var mockProductStockService = new Mock<IProductStockService>();
             var mockProductMapper = new Mock<IMapper<Product, ProductDto>>();
             var mockStockMapper = new Mock<IMapper<ProductStock, ProductStockDto>>();
             var productService = new ProductService(mockProductRepository.Object, mockProductStockService.Object, mockProductMapper.Object, mockStockMapper.Object);
-            mockProductRepository.Setup(repo => repo.GetByIdAsync(1)).ReturnsAsync((Product)null);
+            mockProductRepository.Setup(repo => repo.GetByIdAsync(1)).ReturnsAsync((Product)null!);
 
-            var result = await productService.GetProductByIdWithStockAsync(1);
+            var result = await productService.GetProductByIdWithStockAsync(1).ConfigureAwait(false);
 
             Assert.Null(result);
         }
 
         //----------------------------------------
         [Fact]
-        public async Task GetAllAsync_ShouldReturnAllProductStocks()
+        public async Task GetAllAsyncShouldReturnAllProductStocks()
         {
             var mockRepository = new Mock<IProductStockRepository>();
             var mockMapper = new Mock<IMapper<ProductStock, ProductStockDto>>();
@@ -592,13 +589,13 @@ namespace Pepsi.Tests.Core
             mockRepository.Setup(repo => repo.GetAllAsync()).ReturnsAsync(stocks);
             mockMapper.Setup(mapper => mapper.MapToDtoList(stocks)).Returns(stockDtos);
 
-            var result = await productStockService.GetAllAsync();
+            var result = await productStockService.GetAllAsync().ConfigureAwait(false);
 
             Assert.Equal(stockDtos, result);
         }
 
         [Fact]
-        public async Task GetByIdAsync_ShouldReturnProductStock_WhenProductStockExists()
+        public async Task GetByIdAsyncShouldReturnProductStockWhenProductStockExists()
         {
             var mockRepository = new Mock<IProductStockRepository>();
             var mockMapper = new Mock<IMapper<ProductStock, ProductStockDto>>();
@@ -608,26 +605,26 @@ namespace Pepsi.Tests.Core
             mockRepository.Setup(repo => repo.GetByIdAsync(1)).ReturnsAsync(stock);
             mockMapper.Setup(mapper => mapper.MapToDto(stock)).Returns(stockDto);
 
-            var result = await productStockService.GetByIdAsync(1);
+            var result = await productStockService.GetByIdAsync(1).ConfigureAwait(false);
 
             Assert.Equal(stockDto, result);
         }
 
         [Fact]
-        public async Task GetByIdAsync_ShouldReturnNull_WhenProductStockDoesNotExist()
+        public async Task GetByIdAsyncShouldReturnNullWhenProductStockDoesNotExist()
         {
             var mockRepository = new Mock<IProductStockRepository>();
             var mockMapper = new Mock<IMapper<ProductStock, ProductStockDto>>();
             var productStockService = new ProductStockService(mockRepository.Object, mockMapper.Object);
-            mockRepository.Setup(repo => repo.GetByIdAsync(1)).ReturnsAsync((ProductStock)null);
+            mockRepository.Setup(repo => repo.GetByIdAsync(1)).ReturnsAsync((ProductStock)null!);
 
-            var result = await productStockService.GetByIdAsync(1);
+            var result = await productStockService.GetByIdAsync(1).ConfigureAwait(false);
 
             Assert.Null(result);
         }
 
         [Fact]
-        public async Task GetStockByProductIdAsync_ShouldReturnProductStock_WhenProductStockExists()
+        public async Task GetStockByProductIdAsyncShouldReturnProductStockWhenProductStockExists()
         {
             var mockRepository = new Mock<IProductStockRepository>();
             var mockMapper = new Mock<IMapper<ProductStock, ProductStockDto>>();
@@ -637,20 +634,20 @@ namespace Pepsi.Tests.Core
             mockRepository.Setup(repo => repo.GetStockByProductIdAsync(1)).ReturnsAsync(stock);
             mockMapper.Setup(mapper => mapper.MapToDto(stock)).Returns(stockDto);
 
-            var result = await productStockService.GetStockByProductIdAsync(1);
+            var result = await productStockService.GetStockByProductIdAsync(1).ConfigureAwait(false);
 
             Assert.Equal(stockDto, result);
         }
 
         [Fact]
-        public async Task GetStockByProductIdAsync_ShouldReturnNull_WhenProductStockDoesNotExist()
+        public async Task GetStockByProductIdAsyncShouldReturnNullWhenProductStockDoesNotExist()
         {
             var mockRepository = new Mock<IProductStockRepository>();
             var mockMapper = new Mock<IMapper<ProductStock, ProductStockDto>>();
             var productStockService = new ProductStockService(mockRepository.Object, mockMapper.Object);
-            mockRepository.Setup(repo => repo.GetStockByProductIdAsync(1)).ReturnsAsync((ProductStock)null);
+            mockRepository.Setup(repo => repo.GetStockByProductIdAsync(1)).ReturnsAsync((ProductStock)null!);
 
-            var result = await productStockService.GetStockByProductIdAsync(1);
+            var result = await productStockService.GetStockByProductIdAsync(1).ConfigureAwait(false);
 
             Assert.Null(result);
         }

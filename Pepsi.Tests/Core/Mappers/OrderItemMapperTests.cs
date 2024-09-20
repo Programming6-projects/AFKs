@@ -3,7 +3,6 @@ using Pepsi.Core.Entity;
 using Pepsi.Core.Mappers;
 using Pepsi.Core.Interfaces.Mappers;
 using Moq;
-using Xunit;
 
 namespace Pepsi.Tests.Core.Mappers
 {
@@ -19,7 +18,7 @@ namespace Pepsi.Tests.Core.Mappers
         }
 
         [Fact]
-        public void MapToDto_ShouldMapOrderItemToOrderItemDto()
+        public void MapToDtoShouldMapOrderItemToOrderItemDto()
         {
             var product = new Product { Id = 1, Name = "Pepsi", Price = 99.99m, Weight = 1.5m };
             var orderItem = new OrderItem { Id = 1, OrderId = 1, ProductId = 1, Product = product, Quantity = 10, UnitPrice = 1000.5m };
@@ -38,7 +37,7 @@ namespace Pepsi.Tests.Core.Mappers
         }
 
         [Fact]
-        public void MapToEntity_ShouldMapOrderItemDtoToOrderItem()
+        public void MapToEntityShouldMapOrderItemDtoToOrderItem()
         {
             var orderItemDto = new OrderItemDto { Id = 1, OrderId = 1, ProductId = 1, Quantity = 10, UnitPrice = 1000.5m };
 
@@ -52,7 +51,7 @@ namespace Pepsi.Tests.Core.Mappers
         }
 
         [Fact]
-        public void MapToDtoList_ShouldMapOrderItemListToOrderItemDtoList()
+        public void MapToDtoListShouldMapOrderItemListToOrderItemDtoList()
         {
             var product = new Product { Id = 1, Name = "Pepsi", Price = 99.99m, Weight = 1.5m };
             var orderItems = new List<OrderItem>
@@ -66,13 +65,14 @@ namespace Pepsi.Tests.Core.Mappers
 
             var orderItemDtos = _mapper.MapToDtoList(orderItems);
 
-            Assert.Equal(orderItems.Count, orderItemDtos.Count());
-            Assert.Equal(orderItems[0].Id, orderItemDtos.ElementAt(0).Id);
-            Assert.Equal(orderItems[1].Id, orderItemDtos.ElementAt(1).Id);
+            var itemDtos = orderItemDtos as OrderItemDto[] ?? orderItemDtos.ToArray();
+            Assert.Equal(orderItems.Count, itemDtos.Length);
+            Assert.Equal(orderItems[0].Id, itemDtos.ElementAt(0).Id);
+            Assert.Equal(orderItems[1].Id, itemDtos.ElementAt(1).Id);
         }
 
         [Fact]
-        public void MapToEntityList_ShouldMapOrderItemDtoListToOrderItemList()
+        public void MapToEntityListShouldMapOrderItemDtoListToOrderItemList()
         {
             var orderItemDtos = new List<OrderItemDto>
             {
@@ -82,9 +82,10 @@ namespace Pepsi.Tests.Core.Mappers
 
             var orderItems = _mapper.MapToEntityList(orderItemDtos);
 
-            Assert.Equal(orderItemDtos.Count, orderItems.Count());
-            Assert.Equal(orderItemDtos[0].Id, orderItems.ElementAt(0).Id);
-            Assert.Equal(orderItemDtos[1].Id, orderItems.ElementAt(1).Id);
+            var enumerable = orderItems as OrderItem[] ?? orderItems.ToArray();
+            Assert.Equal(orderItemDtos.Count, enumerable.Length);
+            Assert.Equal(orderItemDtos[0].Id, enumerable.ElementAt(0).Id);
+            Assert.Equal(orderItemDtos[1].Id, enumerable.ElementAt(1).Id);
         }
     }
 }
