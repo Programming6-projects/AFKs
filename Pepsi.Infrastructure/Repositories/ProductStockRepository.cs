@@ -15,8 +15,4 @@ public class ProductStockRepository : GenericRepository<ProductStock>, IProductS
         var sql = "SELECT * FROM ProductStocks WHERE ProductId = @ProductId";
         return await DbAccessor.QuerySingleOrDefaultAsync<ProductStock>(sql, new { ProductId = productId });
     }
-
-
-
-
 }
