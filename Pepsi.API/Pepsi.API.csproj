@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Pepsi.Infrastructure\Pepsi.Infrastructure.csproj" />
+    <ProjectReference Include="..\Pepsi.Core\Pepsi.Core.csproj" />
   </ItemGroup>
 
 </Project>
