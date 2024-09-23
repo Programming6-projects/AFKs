@@ -28,7 +28,7 @@ jobs:
       run: dotnet build --no-restore
 
     - name: Run tests and check coverage
-      run: dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:Threshold=50 /p:Exclude="[Pepsi.API]*"
+      run: dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:Threshold=80
 
     - name: Run .NET Code Analysis
       run: dotnet build /p:EnforceCodeStyleInBuild=true /p:AnalysisMode=All /p:TreatWarningsAsErrors=true

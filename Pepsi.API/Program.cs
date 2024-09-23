@@ -1,26 +1,47 @@
+using System.Diagnostics;
+using Microsoft.OpenApi.Models;
+using Pepsi.API.Seeders;
+using Pepsi.Core;
+using Pepsi.Infrastructure;
 
-using Pepsi.Infrastructure.Utils;
-using System.Diagnostics.CodeAnalysis;
+namespace Pepsi.API;
 
-
-
-
-var builder = WebApplication.CreateBuilder(args);
-
-builder.Services.AddScoped<IDatabaseHelper, DatabaseHelper>();
-
-builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
-builder.Configuration.AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true);
-
-var app = builder.Build();
-
-var vehicles = FileReader.ReadVehiclesFromJson();
-Console.WriteLine(vehicles!.Count);
-
-app.MapGet("/check-connection", (IDatabaseHelper dbHelper) =>
+internal static class Program
 {
-    var isConnected = dbHelper.CheckConnection();
-    return isConnected ? Results.Ok("Database connection is successful!") : Results.StatusCode(500);
-});
+    public static async Task Main(string[] args)
+    {
+        var builder = WebApplication.CreateBuilder(args);
 
-app.Run();
+        builder.Services.AddControllers();
+        builder.Services.AddEndpointsApiExplorer();
+        builder.Services.AddSwaggerGen(c =>
+        {
+            c.SwaggerDoc("v1", new OpenApiInfo { Title = "Pepsi API", Version = "v1" });
+        });
+
+        builder.Services.AddInfrastructure(builder.Configuration);
+        builder.Services.AddCoreServices();
+        builder.Services.AddScoped<DataSeeder>();
+
+        var app = builder.Build();
+
+        if (app.Environment.IsDevelopment())
+        {
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Pepsi API v1"));
+        }
+
+        app.UseHttpsRedirection();
+        app.UseAuthorization();
+        app.MapControllers();
+
+        using (var scope = app.Services.CreateScope())
+        {
+            var dataSeeder = scope.ServiceProvider.GetRequiredService<DataSeeder>();
+            await dataSeeder.SeedVehiclesAsync("Data/Vehicles.json").ConfigureAwait(false);
+        }
+
+        Debug.Assert(app != null, nameof(app) + " != null");
+        await app.RunAsync().ConfigureAwait(false);
+    }
+}

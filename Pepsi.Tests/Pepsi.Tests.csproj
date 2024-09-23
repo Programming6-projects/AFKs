@@ -15,6 +15,9 @@
     <Threshold>80</Threshold>
     <ThresholdType>line,branch,method</ThresholdType>
     <ThresholdStat>total</ThresholdStat>
+      
+    <CoverletOutputFormat>opencover</CoverletOutputFormat>
+    <Exclude>[Pepsi.Infrastructure.DatabaseAccessor*]*</Exclude>
   </PropertyGroup>
 
   <ItemGroup>
