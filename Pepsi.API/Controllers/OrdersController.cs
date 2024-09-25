@@ -36,24 +36,4 @@ public class OrderController(IOrderService orderService) : ControllerBase
         var id = await orderService.AddAsync(orderDto).ConfigureAwait(false);
         return CreatedAtAction(nameof(GetById), new { id }, orderDto);
     }
-
-    [HttpPut("{id:int}")]
-    public async Task<IActionResult> Update(int id, [FromBody] OrderDto orderDto)
-    {
-        Debug.Assert(orderDto != null, nameof(orderDto) + " != null");
-        if (id != orderDto.Id)
-        {
-            return BadRequest();
-        }
-
-        await orderService.UpdateAsync(orderDto).ConfigureAwait(false);
-        return NoContent();
-    }
-
-    [HttpDelete("{id:int}")]
-    public async Task<IActionResult> Delete(int id)
-    {
-        await orderService.DeleteAsync(id).ConfigureAwait(false);
-        return NoContent();
-    }
 }

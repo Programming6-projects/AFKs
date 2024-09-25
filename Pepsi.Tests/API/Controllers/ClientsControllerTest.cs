@@ -79,42 +79,6 @@ public class ClientControllerTests
     }
 
     [Fact]
-    public async Task UpdateReturnsNoContent()
-    {
-        // Arrange
-        var clientDto = new ClientDto { Id = 1, Name = "Client1" };
-
-        // Act
-        var result = await _controller.Update(1, clientDto).ConfigureAwait(false);
-
-        // Assert
-        Assert.IsType<NoContentResult>(result);
-    }
-
-    [Fact]
-    public async Task UpdateReturnsBadRequestWhenIdMismatch()
-    {
-        // Arrange
-        var clientDto = new ClientDto { Id = 1, Name = "Client1" };
-
-        // Act
-        var result = await _controller.Update(2, clientDto).ConfigureAwait(false);
-
-        // Assert
-        Assert.IsType<BadRequestResult>(result);
-    }
-
-    [Fact]
-    public async Task DeleteReturnsNoContent()
-    {
-        // Act
-        var result = await _controller.Delete(1).ConfigureAwait(false);
-
-        // Assert
-        Assert.IsType<NoContentResult>(result);
-    }
-
-    [Fact]
     public async Task GetClientsByRegionReturnsOkResultWithListOfClients()
     {
         // Arrange

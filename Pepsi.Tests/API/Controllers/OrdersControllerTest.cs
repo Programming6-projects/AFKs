@@ -93,40 +93,4 @@ public class OrderControllerTests
         Assert.Equal(nameof(_controller.GetById), createdAtActionResult.ActionName);
         Assert.Equal(orderDto, createdAtActionResult.Value);
     }
-
-    [Fact]
-    public async Task UpdateReturnsNoContent()
-    {
-        // Arrange
-        var orderDto = new OrderDto { Id = 1, ClientId = 1 };
-
-        // Act
-        var result = await _controller.Update(1, orderDto).ConfigureAwait(false);
-
-        // Assert
-        Assert.IsType<NoContentResult>(result);
-    }
-
-    [Fact]
-    public async Task UpdateReturnsBadRequestWhenIdMismatch()
-    {
-        // Arrange
-        var orderDto = new OrderDto { Id = 1, ClientId = 1 };
-
-        // Act
-        var result = await _controller.Update(2, orderDto).ConfigureAwait(false);
-
-        // Assert
-        Assert.IsType<BadRequestResult>(result);
-    }
-
-    [Fact]
-    public async Task DeleteReturnsNoContent()
-    {
-        // Act
-        var result = await _controller.Delete(1).ConfigureAwait(false);
-
-        // Assert
-        Assert.IsType<NoContentResult>(result);
-    }
 }
