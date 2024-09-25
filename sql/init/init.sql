@@ -55,8 +55,7 @@ CREATE TABLE OrderItems (
     Id SERIAL PRIMARY KEY,
     OrderId INT REFERENCES Orders(Id),
     ProductId INT REFERENCES Products(Id),
-    Quantity INT NOT NULL,
-    UnitPrice DECIMAL(10, 2) NOT NULL
+    Quantity INT NOT NULL
 );
 
 -- INSERT SAMPLE DATA INTO Clients
@@ -64,12 +63,6 @@ INSERT INTO Clients (Name, Address, Region) VALUES
     ('John Doe', '1234 Elm Street', 'North'),
     ('Jane Smith', '4321 Oak Avenue', 'South'),
     ('Acme Corp', '100 Industrial Blvd', 'West');
-
--- INSERT SAMPLE DATA INTO Vehicles
-INSERT INTO Vehicles (Type, Capacity, IsAvailable) VALUES
-    ('truck', 5000.00, TRUE),
-    ('van', 3000.00, FALSE),
-    ('van', 2000.00, TRUE);
 
 -- INSERT SAMPLE DATA INTO Products
 INSERT INTO Products (Name, Price, Weight) VALUES
