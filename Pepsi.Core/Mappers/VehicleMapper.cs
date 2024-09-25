@@ -15,6 +15,8 @@ public class VehicleMapper : IMapper<Vehicle, VehicleDto>
             Id = entity.Id,
             Type = entity.Type,
             Capacity = entity.Capacity,
+            UsedCapacity = entity.UsedCapacity,
+            NotUsedCapacity = entity.NotUsedCapacity,
             IsAvailable = entity.IsAvailable
         };
     }
@@ -22,7 +24,7 @@ public class VehicleMapper : IMapper<Vehicle, VehicleDto>
     public Vehicle MapToEntity(VehicleDto dto)
     {
         Debug.Assert(dto != null, nameof(dto) + " != null");
-        return new Vehicle { Id = dto.Id, Type = dto.Type, Capacity = dto.Capacity, IsAvailable = dto.IsAvailable };
+        return new Vehicle { Id = dto.Id, Type = dto.Type, Capacity = dto.Capacity, NotUsedCapacity = dto.NotUsedCapacity, UsedCapacity = dto.UsedCapacity,IsAvailable = dto.IsAvailable };
     }
 
     public IEnumerable<VehicleDto> MapToDtoList(IEnumerable<Vehicle> entities) =>
