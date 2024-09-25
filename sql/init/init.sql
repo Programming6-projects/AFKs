@@ -75,16 +75,3 @@ INSERT INTO ProductStocks (QuantityOnHand, QuantitySold, QuantityReserved, Produ
     (100, 20, 10, 1),
     (150, 30, 5, 2),
     (50, 5, 2, 3);
-
--- INSERT SAMPLE DATA INTO Orders
-INSERT INTO Orders (ClientId, VehicleId, TotalVolume, OrderDate, DeliveryDate, Status) VALUES
-    (1, 1, 250.00, '2023-09-15', '2023-09-20', 'pending'),
-    (2, 2, 150.00, '2023-09-16', '2023-09-21', 'completed'),
-    (3, 3, 50.00, '2023-09-17', '2023-09-22', 'shipped');
-
--- INSERT SAMPLE DATA INTO OrderItems
-INSERT INTO OrderItems (OrderId, ProductId, Quantity, UnitPrice) VALUES
-    (1, 1, 10, 10.00),
-    (1, 2, 5, 15.00),
-    (2, 3, 20, 5.50),
-    (3, 1, 2, 10.00);
