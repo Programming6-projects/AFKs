@@ -98,7 +98,7 @@ public class OrderMapper(
             var product = await productService.GetByIdAsync(item.ProductId).ConfigureAwait(false);
             if (product != null)
             {
-                totalVolume += product.Weight * item.Quantity;
+                totalVolume += product.Volume * item.Quantity;
             }
         }
         order.TotalVolume = totalVolume;

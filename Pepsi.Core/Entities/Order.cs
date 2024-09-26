@@ -7,7 +7,7 @@ public class Order : BaseEntity
     public int VehicleId { get; init; }
     public Vehicle? Vehicle { get; init; }
     public IEnumerable<OrderItem> Items { get; init; } = new List<OrderItem>();
-    public decimal TotalVolume { get; init; }
+    public decimal TotalVolume { get; set; }
     public decimal TotalPrice { get; init; }
     public DateTime OrderDate { get; init; }
     public DateTime DeliveryDate { get; init; }

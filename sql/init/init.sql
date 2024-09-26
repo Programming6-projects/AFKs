@@ -81,7 +81,7 @@ INSERT INTO Clients (Name, Address, Region) VALUES
     ('Laura Scott', '3456 Cedar Lane', 'West');
 
 -- INSERT SAMPLE DATA INTO Products
-INSERT INTO Products (Name, Price, Weight) VALUES
+INSERT INTO Products (Name, Price, Volume) VALUES
    ('Coca-Cola 12oz', 1.50, 0.35),
    ('Pepsi 12oz', 1.50, 0.35),
    ('Sprite 12oz', 1.50, 0.35),

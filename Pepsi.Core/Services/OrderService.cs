@@ -48,8 +48,8 @@ public class OrderService(
 
     public async Task<int> AddAsync(OrderDto dto)
     {
-        var order = createOrderMapper.MapToEntity(dto);
-        return await orderRepository.AddAsync(order).ConfigureAwait(false);
+        var order = createOrderMapper.MapFromCreateToEntity(dto);
+        return await orderRepository.AddAsync(await order.ConfigureAwait(false)).ConfigureAwait(false);
     }
 
     public Task UpdateAsync(OrderDto dto)
