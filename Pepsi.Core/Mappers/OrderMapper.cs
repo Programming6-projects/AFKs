@@ -6,16 +6,29 @@ using Pepsi.Core.Interfaces.Services;
 
 namespace Pepsi.Core.Mappers;
 
-
 public class OrderMapper(
     IMapper<OrderItem, CompleteOrderItemDto> orderItemMapper,
-    IMapper<OrderItem,OrderItemDto> createOrderItemMapper,
+    IMapper<OrderItem, OrderItemDto> createOrderItemMapper,
     IMapper<Client, ClientDto> clientMapper,
     IMapper<Vehicle, VehicleDto> vehicleMapper,
     IProductService productService)
-    : IMapper<Order, OrderDto>
+    : IMapper<Order, OrderDto>,
+      IMapper<Order, CompleteOrderDto>
 {
     public OrderDto MapToDto(Order entity)
+    {
+        Debug.Assert(entity != null, nameof(entity) + " != null");
+        return new OrderDto
+        {
+            Id = entity.Id,
+            ClientId = entity.ClientId,
+            VehicleId = entity.VehicleId,
+            Items = createOrderItemMapper.MapToDtoList(entity.Items),
+            DeliveryDate = entity.DeliveryDate
+        };
+    }
+
+    public CompleteOrderDto MapToCompleteDto(Order entity)
     {
         Debug.Assert(entity != null, nameof(entity) + " != null");
         return new CompleteOrderDto
@@ -33,9 +46,22 @@ public class OrderMapper(
         };
     }
 
+    CompleteOrderDto IMapper<Order, CompleteOrderDto>.MapToDto(Order entity)
+    {
+        return MapToCompleteDto(entity);
+    }
+
     public Order MapToEntity(OrderDto dto)
     {
-        throw new NotImplementedException();
+        Debug.Assert(dto != null, nameof(dto) + " != null");
+        return new Order
+        {
+            Id = dto.Id,
+            ClientId = dto.ClientId,
+            VehicleId = dto.VehicleId,
+            Items = createOrderItemMapper.MapToEntityList(dto.Items),
+            DeliveryDate = dto.DeliveryDate,
+        };
     }
 
     public Order MapToEntity(CompleteOrderDto dto)
@@ -80,10 +106,22 @@ public class OrderMapper(
         return order;
     }
 
+    public Task<Order> MapFromCreateToEntity(CompleteOrderDto dto)
+    {
+        // For CompleteOrderDto, we can use the synchronous MapToEntity method
+        // as all required information is already present in the DTO
+        return Task.FromResult(MapToEntity(dto));
+    }
+
     public IEnumerable<OrderDto> MapToDtoList(IEnumerable<Order> entities) =>
         entities.Select(MapToDto);
 
+    IEnumerable<CompleteOrderDto> IMapper<Order, CompleteOrderDto>.MapToDtoList(IEnumerable<Order> entities) =>
+        entities.Select(MapToCompleteDto);
 
     public IEnumerable<Order> MapToEntityList(IEnumerable<OrderDto> dtos) =>
+        dtos.Select(MapToEntity);
+
+    public IEnumerable<Order> MapToEntityList(IEnumerable<CompleteOrderDto> dtos) =>
         dtos.Select(MapToEntity);
 }
