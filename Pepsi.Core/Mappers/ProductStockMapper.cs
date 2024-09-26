@@ -34,6 +34,11 @@ public class ProductStockMapper : IMapper<ProductStock, ProductStockDto>
         };
     }
 
+    public Task<ProductStock> MapFromCreateToEntity(ProductStockDto dto)
+    {
+        throw new NotImplementedException();
+    }
+
     public IEnumerable<ProductStockDto> MapToDtoList(IEnumerable<ProductStock> entities)
     {
         return entities.Select(MapToDto);

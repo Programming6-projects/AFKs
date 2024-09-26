@@ -8,7 +8,8 @@ namespace Pepsi.Core.Services;
 
 public class OrderService(
     IOrderRepository orderRepository,
-    IMapper<Order, OrderDto> mapper,
+    IMapper<Order, CompleteOrderDto> mapper,
+    IMapper<Order,OrderDto> createOrderMapper,
     IClientService clientService,
     IVehicleService vehicleService,
     IOrderItemService orderItemService)
@@ -18,7 +19,7 @@ public class OrderService(
     {
         var orders = await orderRepository.GetAllAsync().ConfigureAwait(false);
         var orderDtos = mapper.MapToDtoList(orders);
-        IEnumerable<OrderDto> allAsync = orderDtos.ToList();
+        IEnumerable<CompleteOrderDto> allAsync = orderDtos.ToList();
         await PopulateOrderDetails(allAsync).ConfigureAwait(false);
         return allAsync;
     }
@@ -40,35 +41,34 @@ public class OrderService(
     {
         var orders = await orderRepository.GetOrdersByClientIdAsync(clientId).ConfigureAwait(false);
         var orderDtos = mapper.MapToDtoList(orders);
-        IEnumerable<OrderDto> ordersByClientIdAsync = orderDtos.ToList();
+        IEnumerable<CompleteOrderDto> ordersByClientIdAsync = orderDtos.ToList();
         await PopulateOrderDetails(ordersByClientIdAsync).ConfigureAwait(false);
         return ordersByClientIdAsync;
     }
 
     public async Task<int> AddAsync(OrderDto dto)
     {
-        var order = mapper.MapToEntity(dto);
+        var order = createOrderMapper.MapToEntity(dto);
         return await orderRepository.AddAsync(order).ConfigureAwait(false);
     }
 
-    public async Task UpdateAsync(OrderDto dto)
+    public Task UpdateAsync(OrderDto dto)
     {
-        var order = mapper.MapToEntity(dto);
-        await orderRepository.UpdateAsync(order).ConfigureAwait(false);
+        throw new NotImplementedException();
     }
 
-    public async Task DeleteAsync(int id)
+    public Task DeleteAsync(int id)
     {
-        await orderRepository.DeleteAsync(id).ConfigureAwait(false);
+        throw new NotImplementedException();
     }
 
-    private async Task PopulateOrderDetails(IEnumerable<OrderDto> orderDtos)
+    private async Task PopulateOrderDetails(IEnumerable<CompleteOrderDto> orderDtos)
     {
         foreach (var orderDto in orderDtos)
         {
             orderDto.Client = await clientService.GetByIdAsync(orderDto.ClientId).ConfigureAwait(false);
             orderDto.Vehicle = await vehicleService.GetByIdAsync(orderDto.VehicleId).ConfigureAwait(false);
-            orderDto.Items = await orderItemService.GetOrderItemsByOrderIdAsync(orderDto.Id).ConfigureAwait(false);
+            orderDto.Items = (IEnumerable<CompleteOrderItemDto>)await orderItemService.GetOrderItemsByOrderIdAsync(orderDto.Id).ConfigureAwait(false);
         }
     }
 }

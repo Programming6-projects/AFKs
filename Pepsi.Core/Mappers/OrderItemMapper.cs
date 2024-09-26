@@ -16,7 +16,6 @@ public class OrderItemMapper(IMapper<Product, ProductDto> productMapper) : IMapp
             Id = entity.Id,
             OrderId = entity.OrderId,
             ProductId = entity.ProductId,
-            Product = entity.Product != null ? productMapper.MapToDto(entity.Product) : null,
             Quantity = entity.Quantity,
         };
     }
@@ -33,8 +32,20 @@ public class OrderItemMapper(IMapper<Product, ProductDto> productMapper) : IMapp
         };
     }
 
+    public Task<OrderItem> MapFromCreateToEntity(OrderItemDto dto)
+    {
+        Debug.Assert(dto != null, nameof(dto) + " != null");
+        return Task.FromResult(new OrderItem
+        {
+            OrderId = dto.OrderId,
+            ProductId = dto.ProductId,
+            Quantity = dto.Quantity,
+        });
+    }
+
     public IEnumerable<OrderItemDto> MapToDtoList(IEnumerable<OrderItem> entities) =>
         entities.Select(MapToDto);
+
 
     public IEnumerable<OrderItem> MapToEntityList(IEnumerable<OrderItemDto> dtos) =>
         dtos.Select(MapToEntity);

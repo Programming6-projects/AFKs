@@ -25,6 +25,11 @@ public class ClientMapper : IMapper<Client, ClientDto>
         return new Client() { Id = dto.Id, Name = dto.Name, Region = dto.Region, Address = dto.Address };
     }
 
+    public Task<Client> MapFromCreateToEntity(ClientDto dto)
+    {
+        throw new NotImplementedException();
+    }
+
     public IEnumerable<ClientDto> MapToDtoList(IEnumerable<Client> entities)
     {
         return entities.Select(MapToDto).ToList();

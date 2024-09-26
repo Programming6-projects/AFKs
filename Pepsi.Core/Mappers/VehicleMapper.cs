@@ -27,6 +27,11 @@ public class VehicleMapper : IMapper<Vehicle, VehicleDto>
         return new Vehicle { Id = dto.Id, Type = dto.Type, Capacity = dto.Capacity, NotUsedCapacity = dto.NotUsedCapacity, UsedCapacity = dto.UsedCapacity,IsAvailable = dto.IsAvailable };
     }
 
+    public Task<Vehicle> MapFromCreateToEntity(VehicleDto dto)
+    {
+        throw new NotImplementedException();
+    }
+
     public IEnumerable<VehicleDto> MapToDtoList(IEnumerable<Vehicle> entities) =>
         entities.Select(MapToDto);
 

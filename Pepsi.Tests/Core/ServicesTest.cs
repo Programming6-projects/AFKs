@@ -247,8 +247,8 @@ namespace Pepsi.Tests.Core
             var mockRepository = new Mock<IOrderItemRepository>();
             var mockMapper = new Mock<IMapper<OrderItem, OrderItemDto>>();
             var orderItemService = new OrderItemService(mockRepository.Object, mockMapper.Object);
-            var orderItems = new List<OrderItem> { new OrderItem { Id = 1, OrderId = 1, ProductId = 1, Quantity = 10, UnitPrice = 1000.5m } };
-            var orderItemDtos = new List<OrderItemDto> { new OrderItemDto { Id = 1, OrderId = 1, ProductId = 1, Quantity = 10, UnitPrice = 1000.5m } };
+            var orderItems = new List<OrderItem> { new OrderItem { Id = 1, OrderId = 1, ProductId = 1, Quantity = 10 } };
+            var orderItemDtos = new List<OrderItemDto> { new OrderItemDto { Id = 1, OrderId = 1, ProductId = 1, Quantity = 10 } };
             mockRepository.Setup(repo => repo.GetAllAsync()).ReturnsAsync(orderItems);
             mockMapper.Setup(mapper => mapper.MapToDtoList(orderItems)).Returns(orderItemDtos);
 
@@ -263,8 +263,8 @@ namespace Pepsi.Tests.Core
             var mockRepository = new Mock<IOrderItemRepository>();
             var mockMapper = new Mock<IMapper<OrderItem, OrderItemDto>>();
             var orderItemService = new OrderItemService(mockRepository.Object, mockMapper.Object);
-            var orderItem = new OrderItem { Id = 1, OrderId = 1, ProductId = 1, Quantity = 10, UnitPrice = 1000.5m };
-            var orderItemDto = new OrderItemDto { Id = 1, OrderId = 1, ProductId = 1, Quantity = 10, UnitPrice = 1000.5m };
+            var orderItem = new OrderItem { Id = 1, OrderId = 1, ProductId = 1, Quantity = 10 };
+            var orderItemDto = new OrderItemDto { Id = 1, OrderId = 1, ProductId = 1, Quantity = 10};
             mockRepository.Setup(repo => repo.GetByIdAsync(1)).ReturnsAsync(orderItem);
             mockMapper.Setup(mapper => mapper.MapToDto(orderItem)).Returns(orderItemDto);
 
@@ -292,8 +292,8 @@ namespace Pepsi.Tests.Core
             var mockRepository = new Mock<IOrderItemRepository>();
             var mockMapper = new Mock<IMapper<OrderItem, OrderItemDto>>();
             var orderItemService = new OrderItemService(mockRepository.Object, mockMapper.Object);
-            var orderItemDto = new OrderItemDto { Id = 1, OrderId = 1, ProductId = 1, Quantity = 10, UnitPrice = 1000.5m };
-            var orderItem = new OrderItem { Id = 1, OrderId = 1, ProductId = 1, Quantity = 10, UnitPrice = 1000.5m };
+            var orderItemDto = new OrderItemDto { Id = 1, OrderId = 1, ProductId = 1, Quantity = 10 };
+            var orderItem = new OrderItem { Id = 1, OrderId = 1, ProductId = 1, Quantity = 10 };
             mockMapper.Setup(m => m.MapToEntity(orderItemDto)).Returns(orderItem);
             mockRepository.Setup(repo => repo.AddAsync(orderItem)).ReturnsAsync(1);
 
@@ -308,8 +308,8 @@ namespace Pepsi.Tests.Core
             var mockRepository = new Mock<IOrderItemRepository>();
             var mockMapper = new Mock<IMapper<OrderItem, OrderItemDto>>();
             var orderItemService = new OrderItemService(mockRepository.Object, mockMapper.Object);
-            var orderItemDto = new OrderItemDto { Id = 1, OrderId = 1, ProductId = 1, Quantity = 10, UnitPrice = 1000.5m };
-            var orderItem = new OrderItem { Id = 1, OrderId = 1, ProductId = 1, Quantity = 10, UnitPrice = 1000.5m };
+            var orderItemDto = new OrderItemDto { Id = 1, OrderId = 1, ProductId = 1, Quantity = 10 };
+            var orderItem = new OrderItem { Id = 1, OrderId = 1, ProductId = 1, Quantity = 10 };
             mockMapper.Setup(m => m.MapToEntity(orderItemDto)).Returns(orderItem);
 
             await orderItemService.UpdateAsync(orderItemDto).ConfigureAwait(false);
@@ -335,8 +335,8 @@ namespace Pepsi.Tests.Core
             var mockRepository = new Mock<IOrderItemRepository>();
             var mockMapper = new Mock<IMapper<OrderItem, OrderItemDto>>();
             var orderItemService = new OrderItemService(mockRepository.Object, mockMapper.Object);
-            var orderItems = new List<OrderItem> { new OrderItem { Id = 1, OrderId = 1, ProductId = 1, Quantity = 10, UnitPrice = 1000.5m } };
-            var orderItemDtos = new List<OrderItemDto> { new OrderItemDto { Id = 1, OrderId = 1, ProductId = 1, Quantity = 10, UnitPrice = 1000.5m } };
+            var orderItems = new List<OrderItem> { new OrderItem { Id = 1, OrderId = 1, ProductId = 1, Quantity = 10 } };
+            var orderItemDtos = new List<OrderItemDto> { new OrderItemDto { Id = 1, OrderId = 1, ProductId = 1, Quantity = 10 } };
             mockRepository.Setup(repo => repo.GetOrderItemsByOrderIdAsync(1)).ReturnsAsync(orderItems);
             mockMapper.Setup(mapper => mapper.MapToDtoList(orderItems)).Returns(orderItemDtos);
 

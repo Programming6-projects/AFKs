@@ -27,7 +27,6 @@ public static class CoreInjection
         services.AddScoped<IMapper<Vehicle, VehicleDto>, VehicleMapper>();
         services.AddScoped<IMapper<Order, OrderDto>, OrderMapper>();
         services.AddScoped<IMapper<OrderItem, OrderItemDto>, OrderItemMapper>();
-
         return services;
     }
 }

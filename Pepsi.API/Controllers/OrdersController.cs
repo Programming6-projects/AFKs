@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Pepsi.Core.DTOs;
 using Pepsi.Core.Interfaces.Services;

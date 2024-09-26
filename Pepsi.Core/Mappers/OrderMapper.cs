@@ -2,20 +2,23 @@ using System.Diagnostics;
 using Pepsi.Core.DTOs;
 using Pepsi.Core.Entities;
 using Pepsi.Core.Interfaces.Mappers;
+using Pepsi.Core.Interfaces.Services;
 
 namespace Pepsi.Core.Mappers;
 
 
 public class OrderMapper(
-    IMapper<OrderItem, OrderItemDto> orderItemMapper,
+    IMapper<OrderItem, CompleteOrderItemDto> orderItemMapper,
+    IMapper<OrderItem,OrderItemDto> createOrderItemMapper,
     IMapper<Client, ClientDto> clientMapper,
-    IMapper<Vehicle, VehicleDto> vehicleMapper)
+    IMapper<Vehicle, VehicleDto> vehicleMapper,
+    IProductService productService)
     : IMapper<Order, OrderDto>
 {
     public OrderDto MapToDto(Order entity)
     {
         Debug.Assert(entity != null, nameof(entity) + " != null");
-        return new OrderDto
+        return new CompleteOrderDto
         {
             Id = entity.Id,
             ClientId = entity.ClientId,
@@ -32,6 +35,11 @@ public class OrderMapper(
 
     public Order MapToEntity(OrderDto dto)
     {
+        throw new NotImplementedException();
+    }
+
+    public Order MapToEntity(CompleteOrderDto dto)
+    {
         Debug.Assert(dto != null, nameof(dto) + " != null");
         return new Order
         {
@@ -46,8 +54,35 @@ public class OrderMapper(
         };
     }
 
+    public async Task<Order> MapFromCreateToEntity(OrderDto dto)
+    {
+        Debug.Assert(dto != null, nameof(dto) + " != null");
+        var order = new Order
+        {
+            ClientId = dto.ClientId,
+            VehicleId = dto.VehicleId,
+            Items = createOrderItemMapper.MapToEntityList(dto.Items),
+            OrderDate = DateTime.Today,
+            DeliveryDate = dto.DeliveryDate,
+            Status = OrderStatus.Pending
+        };
+        var totalVolume = 0m;
+        foreach (var item in order.Items)
+        {
+            var product = await productService.GetByIdAsync(item.ProductId).ConfigureAwait(false);
+            if (product != null)
+            {
+                totalVolume += product.Weight * item.Quantity;
+            }
+        }
+        order.TotalVolume = totalVolume;
+
+        return order;
+    }
+
     public IEnumerable<OrderDto> MapToDtoList(IEnumerable<Order> entities) =>
         entities.Select(MapToDto);
+
 
     public IEnumerable<Order> MapToEntityList(IEnumerable<OrderDto> dtos) =>
         dtos.Select(MapToEntity);

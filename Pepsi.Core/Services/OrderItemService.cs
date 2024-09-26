@@ -8,7 +8,8 @@ namespace Pepsi.Core.Services;
 
 public class OrderItemService(
     IOrderItemRepository orderItemRepository,
-    IMapper<OrderItem, OrderItemDto> mapper)
+    IMapper<OrderItem, OrderItemDto> mapper,
+    IMapper<OrderItem,CompleteOrderItemDto> mapperComplete)
     : IOrderItemService
 {
     public async Task<IEnumerable<OrderItemDto>> GetAllAsync()
@@ -25,24 +26,23 @@ public class OrderItemService(
 
     public async Task<int> AddAsync(OrderItemDto dto)
     {
-        var orderItem = mapper.MapToEntity(dto);
+        var orderItem = await mapper.MapFromCreateToEntity(dto);
         return await orderItemRepository.AddAsync(orderItem).ConfigureAwait(false);
     }
 
-    public async Task UpdateAsync(OrderItemDto dto)
+    public Task UpdateAsync(OrderItemDto dto)
     {
-        var orderItem = mapper.MapToEntity(dto);
-        await orderItemRepository.UpdateAsync(orderItem).ConfigureAwait(false);
+        throw new NotImplementedException();
     }
 
-    public async Task DeleteAsync(int id)
+    public Task DeleteAsync(int id)
     {
-        await orderItemRepository.DeleteAsync(id).ConfigureAwait(false);
+        throw new NotImplementedException();
     }
 
     public async Task<IEnumerable<OrderItemDto>> GetOrderItemsByOrderIdAsync(int orderDtoId)
     {
         var orderItems = await orderItemRepository.GetOrderItemsByOrderIdAsync(orderDtoId).ConfigureAwait(false);
-        return mapper.MapToDtoList(orderItems);
+        return mapperComplete.MapToDtoList(orderItems);
     }
 }

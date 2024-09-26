@@ -9,6 +9,7 @@ public interface IMapper<TEntity, TDto>
 {
     TDto MapToDto(TEntity entity);
     TEntity MapToEntity(TDto dto);
+    Task<TEntity> MapFromCreateToEntity(TDto dto);
     IEnumerable<TDto> MapToDtoList(IEnumerable<TEntity> entities);
     IEnumerable<TEntity> MapToEntityList(IEnumerable<TDto> dtos);
 }
