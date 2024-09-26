@@ -30,6 +30,21 @@ public class ProductService(
         return productMapper.MapToDtoList(products);
     }
 
+    public async Task<ProductWithStockDto?> GetByIdWithStockAsync(int id)
+    {
+        var product = await productRepository.GetByIdAsync(id).ConfigureAwait(false);
+        ProductWithStockDto? productDto = null;
+
+        if (product != null && productMapper.MapToDto(product) is ProductWithStockDto mappedProductDto)
+        {
+            var stockDto = await productStockService.GetStockByProductIdAsync(product.Id).ConfigureAwait(false);
+            mappedProductDto.Stock = stockDto;
+            productDto = mappedProductDto;
+        }
+
+        return productDto;
+    }
+
     public async Task<IEnumerable<ProductWithStockDto>> GetAllProductsWithStockAsync()
     {
         var products = await productRepository.GetAllAsync().ConfigureAwait(false);

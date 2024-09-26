@@ -50,10 +50,10 @@ public class OrderItemService(
         {
             if (orderItem.ProductId > 0)
             {
-                var product = await productService.GetByIdAsync(orderItem.ProductId).ConfigureAwait(false);
+                var product = await productService.GetByIdWithStockAsync(orderItem.ProductId).ConfigureAwait(false);
                 if (product != null)
                 {
-                    orderItem.Product = productMapper.MapToEntity(product);
+                    orderItem.Product = product;
                 }
             }
         }
