@@ -9,7 +9,9 @@ namespace Pepsi.Core.Services;
 public class OrderItemService(
     IOrderItemRepository orderItemRepository,
     IMapper<OrderItem, OrderItemDto> mapper,
-    IMapper<OrderItem, CompleteOrderItemDto> mapperComplete)
+    IMapper<OrderItem, CompleteOrderItemDto> mapperComplete,
+    IMapper<Product, ProductDto> productMapper,
+    IProductService productService) // Inject ProductService or IProductRepository
     : IOrderItemService
 {
     public async Task<IEnumerable<OrderItemDto>> GetAllAsync()
@@ -43,6 +45,19 @@ public class OrderItemService(
     public async Task<IEnumerable<OrderItemDto>> GetOrderItemsByOrderIdAsync(int orderDtoId)
     {
         var orderItems = await orderItemRepository.GetOrderItemsByOrderIdAsync(orderDtoId).ConfigureAwait(false);
+
+        foreach (var orderItem in orderItems)
+        {
+            if (orderItem.ProductId > 0)
+            {
+                var product = await productService.GetByIdAsync(orderItem.ProductId).ConfigureAwait(false);
+                if (product != null)
+                {
+                    orderItem.Product = productMapper.MapToEntity(product);
+                }
+            }
+        }
+
         return mapperComplete.MapToDtoList(orderItems);
     }
 }

@@ -59,7 +59,8 @@ public class OrderItemMapper(IMapper<Product, ProductDto> productMapper) : IMapp
             OrderId = dto.OrderId,
             ProductId = dto.ProductId,
             Quantity = dto.Quantity,
-            // Note: We don't set the Product property here as it's not typically
+            Product = dto.Product
+
             // needed when mapping from DTO to Entity for persistence
         };
     }
@@ -83,13 +84,14 @@ public class OrderItemMapper(IMapper<Product, ProductDto> productMapper) : IMapp
             OrderId = dto.OrderId,
             ProductId = dto.ProductId,
             Quantity = dto.Quantity,
+            Product = dto.Product
             // Note: We don't set the Product property here as it's not typically
             // needed when mapping from DTO to Entity for persistence
         });
     }
 
     public IEnumerable<OrderItemDto> MapToDtoList(IEnumerable<OrderItem> entities) =>
-        entities.Select(MapToDto);
+        entities.Select(MapToCompleteDto);
 
     IEnumerable<CompleteOrderItemDto> IMapper<OrderItem, CompleteOrderItemDto>.MapToDtoList(IEnumerable<OrderItem> entities) =>
         entities.Select(MapToCompleteDto);
