@@ -25,7 +25,7 @@ public abstract class GenericRepository<TEntity>(IDatabaseAccessor dbAccessor, s
     public virtual async Task<int> AddAsync(TEntity entity)
     {
         var properties = typeof(TEntity).GetProperties()
-            .Where(p => p.Name != "Id")
+            .Where(p => IsSimpleType(p.PropertyType) && p.Name != "Id")
             .Select(p => p.Name);
         IEnumerable<string> enumerable = properties.ToList();
         var columnNames = string.Join(", ", enumerable);
@@ -50,5 +50,14 @@ public abstract class GenericRepository<TEntity>(IDatabaseAccessor dbAccessor, s
     {
         var sql = $"DELETE FROM {TableName} WHERE Id = @Id";
         await DbAccessor.ExecuteAsync(sql, new { Id = id }).ConfigureAwait(false);
+    }
+
+    private static bool IsSimpleType(Type type)
+    {
+        return type.IsPrimitive ||
+               type.IsValueType ||
+               (type == typeof(string)) ||
+               (type == typeof(DateTime)) ||
+               (type == typeof(decimal));
     }
 }
