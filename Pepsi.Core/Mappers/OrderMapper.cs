@@ -92,16 +92,8 @@ public class OrderMapper(
             DeliveryDate = dto.DeliveryDate,
             Status = OrderStatus.Pending
         };
-        var totalVolume = 0m;
-        foreach (var item in order.Items)
-        {
-            var product = await productService.GetByIdAsync(item.ProductId).ConfigureAwait(false);
-            if (product != null)
-            {
-                totalVolume += product.Volume * item.Quantity;
-            }
-        }
-        order.TotalVolume = totalVolume;
+        order.TotalVolume = await CalculateTotalVolume(order.Items).ConfigureAwait(false);
+        order.TotalPrice = await CalculateTotalPrice(order.Items).ConfigureAwait(false);
 
         return order;
     }
@@ -124,4 +116,34 @@ public class OrderMapper(
 
     public IEnumerable<Order> MapToEntityList(IEnumerable<CompleteOrderDto> dtos) =>
         dtos.Select(MapToEntity);
+
+
+    private async Task<decimal> CalculateTotalVolume(IEnumerable<OrderItem> items)
+    {
+        var totalVolume = 0m;
+        foreach (var item in items)
+        {
+            var product = await productService.GetByIdAsync(item.ProductId).ConfigureAwait(false);
+            if (product != null)
+            {
+                totalVolume += product.Volume * item.Quantity;
+            }
+        }
+        return totalVolume;
+    }
+
+    private async Task<decimal> CalculateTotalPrice(IEnumerable<OrderItem> items)
+    {
+
+        var totalPrice = 0m;
+        foreach (var item in items)
+        {
+            var product = await productService.GetByIdAsync(item.ProductId).ConfigureAwait(false);
+            if (product != null)
+            {
+                totalPrice += product.Price * item.Quantity;
+            }
+        }
+        return totalPrice;
+    }
 }
