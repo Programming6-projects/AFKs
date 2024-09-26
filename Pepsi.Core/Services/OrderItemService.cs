@@ -11,7 +11,7 @@ public class OrderItemService(
     IMapper<OrderItem, OrderItemDto> mapper,
     IMapper<OrderItem, CompleteOrderItemDto> mapperComplete,
     IMapper<Product, ProductDto> productMapper,
-    IProductService productService) // Inject ProductService or IProductRepository
+    IProductService productService)
     : IOrderItemService
 {
     public async Task<IEnumerable<OrderItemDto>> GetAllAsync()
@@ -32,6 +32,7 @@ public class OrderItemService(
         return await orderItemRepository.AddAsync(orderItem).ConfigureAwait(false);
     }
 
+
     public Task UpdateAsync(OrderItemDto dto)
     {
         throw new NotImplementedException();
@@ -46,7 +47,8 @@ public class OrderItemService(
     {
         var orderItems = await orderItemRepository.GetOrderItemsByOrderIdAsync(orderDtoId).ConfigureAwait(false);
 
-        foreach (var orderItem in orderItems)
+        var items = orderItems.ToList();
+        foreach (var orderItem in items)
         {
             if (orderItem.ProductId > 0)
             {
@@ -58,7 +60,7 @@ public class OrderItemService(
             }
         }
 
-        return mapperComplete.MapToDtoList(orderItems);
+        return mapperComplete.MapToDtoList(items);
     }
 
 }

@@ -3,6 +3,7 @@ using Pepsi.Core.Entities;
 using Pepsi.Core.Interfaces.Mappers;
 using Pepsi.Core.Interfaces.Repositories;
 using Pepsi.Core.Interfaces.Services;
+using Pepsi.Core.Validators;
 
 namespace Pepsi.Core.Services;
 
@@ -43,5 +44,23 @@ public class VehicleService(IVehicleRepository repository, IMapper<Vehicle, Vehi
     public async Task DeleteAsync(int id)
     {
         await repository.DeleteAsync(id).ConfigureAwait(false);
+    }
+
+    public async void UpdateVehicleCapacityAsync(int vehicleId, decimal totalVolume)
+    {
+        var vehicle = await GetByIdAsync(vehicleId).ConfigureAwait(false);
+        if (vehicle != null)
+        {
+            await UpdateAsync(new VehicleDto
+            {
+                Id = vehicle.Id,
+                Type = vehicle.Type,
+                Capacity = vehicle.Capacity,
+                UsedCapacity = vehicle.UsedCapacity + totalVolume,
+                NotUsedCapacity = vehicle.NotUsedCapacity - totalVolume,
+                IsAvailable = VehicleValidator.ValidateAvailability(vehicle)
+            }).ConfigureAwait(false);
+        }
+
     }
 }

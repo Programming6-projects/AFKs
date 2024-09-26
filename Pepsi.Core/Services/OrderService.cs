@@ -3,6 +3,7 @@ using Pepsi.Core.Entities;
 using Pepsi.Core.Interfaces.Mappers;
 using Pepsi.Core.Interfaces.Repositories;
 using Pepsi.Core.Interfaces.Services;
+using Pepsi.Core.Validators;
 
 namespace Pepsi.Core.Services;
 
@@ -49,17 +50,29 @@ public class OrderService(
     public async Task<int> AddAsync(OrderDto dto)
     {
         var order = createOrderMapper.MapFromCreateToEntity(dto);
+
+        if (!OrderValidator.ValidateOrder(await order.ConfigureAwait(false), vehicleService))
+        {
+            throw new Exception(
+                $"Order is not valid: Total volume:{order.Result.TotalVolume} is greater than the available capacity of the vehicles");
+        }
+
+        var vehicleId = OrderValidator.SelectVehicle(await order.ConfigureAwait(false), vehicleService);
+        order.Result.VehicleId= vehicleId;
+
         var orderId = await orderRepository.AddAsync(await order.ConfigureAwait(false)).ConfigureAwait(false);
         var items = dto.Items;
 
-        foreach (var orderItemDto in items)
+        vehicleService.UpdateVehicleCapacityAsync(vehicleId, order.Result.TotalVolume);
+
+
+        foreach (var orderItem in items)
         {
-            orderItemDto.OrderId = orderId;
-            await orderItemService.AddAsync(orderItemDto).ConfigureAwait(false);
+            orderItem.OrderId = orderId;
+            await orderItemService.AddAsync(orderItem).ConfigureAwait(false);
         }
         return orderId;
     }
-
 
 
     public Task UpdateAsync(OrderDto dto)
