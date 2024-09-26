@@ -9,7 +9,7 @@ namespace Pepsi.Core.Services;
 public class OrderItemService(
     IOrderItemRepository orderItemRepository,
     IMapper<OrderItem, OrderItemDto> mapper,
-    IMapper<OrderItem,CompleteOrderItemDto> mapperComplete)
+    IMapper<OrderItem, CompleteOrderItemDto> mapperComplete)
     : IOrderItemService
 {
     public async Task<IEnumerable<OrderItemDto>> GetAllAsync()
@@ -26,7 +26,7 @@ public class OrderItemService(
 
     public async Task<int> AddAsync(OrderItemDto dto)
     {
-        var orderItem = await mapper.MapFromCreateToEntity(dto);
+        var orderItem = await mapper.MapFromCreateToEntity(dto).ConfigureAwait(false);
         return await orderItemRepository.AddAsync(orderItem).ConfigureAwait(false);
     }
 

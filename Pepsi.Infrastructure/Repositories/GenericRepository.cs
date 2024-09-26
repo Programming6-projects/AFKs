@@ -56,8 +56,8 @@ public abstract class GenericRepository<TEntity>(IDatabaseAccessor dbAccessor, s
     {
         return type.IsPrimitive ||
                type.IsValueType ||
-               (type == typeof(string)) ||
-               (type == typeof(DateTime)) ||
-               (type == typeof(decimal));
+               type == typeof(string) ||
+               type == typeof(DateTime) ||
+               type == typeof(decimal);
     }
 }

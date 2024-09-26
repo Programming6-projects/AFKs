@@ -9,7 +9,7 @@ namespace Pepsi.Core.Services;
 public class OrderService(
     IOrderRepository orderRepository,
     IMapper<Order, CompleteOrderDto> mapper,
-    IMapper<Order,OrderDto> createOrderMapper,
+    IMapper<Order, OrderDto> createOrderMapper,
     IClientService clientService,
     IVehicleService vehicleService,
     IOrderItemService orderItemService)
