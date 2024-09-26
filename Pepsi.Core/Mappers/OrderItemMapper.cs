@@ -28,6 +28,7 @@ public class OrderItemMapper(IMapper<Product, ProductDto> productMapper) : IMapp
             Id = entity.Id,
             OrderId = entity.OrderId,
             ProductId = entity.ProductId,
+            Product = entity.Product,
             Quantity = entity.Quantity,
         };
     }

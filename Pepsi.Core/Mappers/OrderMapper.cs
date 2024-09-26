@@ -40,6 +40,7 @@ public class OrderMapper(
             Vehicle = entity.Vehicle != null ? vehicleMapper.MapToDto(entity.Vehicle) : null,
             Items = orderItemMapper.MapToDtoList(entity.Items),
             TotalVolume = entity.TotalVolume,
+            TotalPrice = entity.TotalPrice,
             OrderDate = entity.OrderDate,
             DeliveryDate = entity.DeliveryDate,
             Status = entity.Status
@@ -74,6 +75,7 @@ public class OrderMapper(
             VehicleId = dto.VehicleId,
             Items = orderItemMapper.MapToEntityList(dto.Items),
             TotalVolume = dto.TotalVolume,
+            TotalPrice = dto.TotalPrice,
             OrderDate = dto.OrderDate,
             DeliveryDate = dto.DeliveryDate,
             Status = dto.Status
