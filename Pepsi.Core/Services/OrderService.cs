@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Pepsi.Core.DTOs;
 using Pepsi.Core.Entities;
 using Pepsi.Core.Interfaces.Mappers;
@@ -53,25 +54,37 @@ public class OrderService(
 
         if (!OrderValidator.ValidateOrder(await order.ConfigureAwait(false), vehicleService))
         {
+#pragma warning disable CA2201
             throw new Exception(
+#pragma warning disable CA1849
                 $"Order is not valid: Total volume:{order.Result.TotalVolume} is greater than the available capacity of the vehicles");
+#pragma warning restore CA1849
+#pragma warning restore CA2201
         }
 
         var vehicleId = OrderValidator.SelectVehicle(await order.ConfigureAwait(false), vehicleService);
-        order.Result.VehicleId= vehicleId;
-
-        var orderId = await orderRepository.AddAsync(await order.ConfigureAwait(false)).ConfigureAwait(false);
-        var items = dto.Items;
-
-        vehicleService.UpdateVehicleCapacityAsync(vehicleId, order.Result.TotalVolume);
-
-
-        foreach (var orderItem in items)
         {
-            orderItem.OrderId = orderId;
-            await orderItemService.AddAsync(orderItem).ConfigureAwait(false);
+#pragma warning disable CA1849
+            order.Result.VehicleId = vehicleId;
+#pragma warning restore CA1849
+
+            var orderId = await orderRepository.AddAsync(await order.ConfigureAwait(false)).ConfigureAwait(false);
+            Debug.Assert(dto != null, nameof(dto) + " != null");
+            var items = dto.Items;
+
+#pragma warning disable CA1849
+            vehicleService.UpdateVehicleCapacityAsync(vehicleId, order.Result.TotalVolume);
+#pragma warning restore CA1849
+
+
+            foreach (var orderItem in items)
+            {
+                orderItem.OrderId = orderId;
+                await orderItemService.AddAsync(orderItem).ConfigureAwait(false);
+            }
+
+            return orderId;
         }
-        return orderId;
     }
 
 

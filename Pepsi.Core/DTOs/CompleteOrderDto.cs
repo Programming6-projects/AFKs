@@ -13,5 +13,5 @@ public class CompleteOrderDto : OrderDto
     public decimal TotalPrice { get; set; }
     public DateTime OrderDate { get; init; }
     public new DateTime DeliveryDate { get; init; }
-    public string Status { get; init; }
+    public string? Status { get; init; }
 }

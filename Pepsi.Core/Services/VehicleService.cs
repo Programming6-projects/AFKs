@@ -60,6 +60,7 @@ public class VehicleService(IVehicleRepository repository, IMapper<Vehicle, Vehi
                 NotUsedCapacity = vehicle.NotUsedCapacity - totalVolume,
                 IsAvailable = VehicleValidator.ValidateAvailability(vehicle)
             }).ConfigureAwait(false);
+
         }
 
     }

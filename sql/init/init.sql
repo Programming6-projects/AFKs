@@ -21,8 +21,7 @@ CREATE TABLE Vehicles (
     Capacity DECIMAL(10, 2) NOT NULL,
     UsedCapacity DECIMAL(10, 2) NOT NULL,
     NotUsedCapacity DECIMAL(10, 2) NOT NULL,
-    IsAvailable BOOLEAN DEFAULT TRUE,
-    CHECK (UsedCapacity < Capacity OR IsAvailable = FALSE)
+    IsAvailable BOOLEAN DEFAULT TRUE
 );
 
 -- CREATE TABLE: Products

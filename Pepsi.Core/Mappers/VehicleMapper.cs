@@ -24,7 +24,7 @@ public class VehicleMapper : IMapper<Vehicle, VehicleDto>
     public Vehicle MapToEntity(VehicleDto dto)
     {
         Debug.Assert(dto != null, nameof(dto) + " != null");
-        return new Vehicle { Id = dto.Id, Type = dto.Type, Capacity = dto.Capacity, NotUsedCapacity = dto.NotUsedCapacity, UsedCapacity = dto.UsedCapacity,IsAvailable = dto.IsAvailable };
+        return new Vehicle { Id = dto.Id, Type = dto.Type, Capacity = dto.Capacity, NotUsedCapacity = dto.NotUsedCapacity, UsedCapacity = dto.UsedCapacity, IsAvailable = dto.IsAvailable };
     }
 
     public Task<Vehicle> MapFromCreateToEntity(VehicleDto dto)
