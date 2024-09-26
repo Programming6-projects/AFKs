@@ -6,5 +6,5 @@ public class VehicleDto : BaseDto
     public decimal Capacity { get; init; }
     public decimal UsedCapacity { get; set; }
     public decimal NotUsedCapacity { get; set; }
-    public bool IsAvailable { get; init; }
+    public bool IsAvailable { get; set; }
 }

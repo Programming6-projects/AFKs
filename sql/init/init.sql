@@ -19,7 +19,10 @@ CREATE TABLE Vehicles (
     Id SERIAL PRIMARY KEY,
     Type VARCHAR(255) NOT NULL,
     Capacity DECIMAL(10, 2) NOT NULL,
-    IsAvailable BOOLEAN DEFAULT TRUE
+    UsedCapacity DECIMAL(10, 2) NOT NULL,
+    NotUsedCapacity DECIMAL(10, 2) NOT NULL,
+    IsAvailable BOOLEAN DEFAULT TRUE,
+    CHECK (UsedCapacity < Capacity OR IsAvailable = FALSE)
 );
 
 -- CREATE TABLE: Products
@@ -27,7 +30,7 @@ CREATE TABLE Products (
     Id SERIAL PRIMARY KEY,
     Name VARCHAR(255) NOT NULL,
     Price DECIMAL(10, 2) NOT NULL,
-    Weight DECIMAL(10, 2) NOT NULL
+    Volume DECIMAL(10, 2) NOT NULL
 );
 
 -- CREATE TABLE: ProductStocks
@@ -45,6 +48,7 @@ CREATE TABLE Orders (
     ClientId INT REFERENCES Clients(Id),
     VehicleId INT REFERENCES Vehicles(Id),
     TotalVolume DECIMAL(10, 2) NOT NULL,
+    TotalPrice DECIMAL(10, 2) NOT NULL,
     OrderDate DATE NOT NULL,
     DeliveryDate DATE NOT NULL,
     Status VARCHAR(50) NOT NULL

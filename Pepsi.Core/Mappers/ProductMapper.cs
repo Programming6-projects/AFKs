@@ -15,7 +15,7 @@ public class ProductMapper : IMapper<Product, ProductDto>
             Id = entity.Id,
             Name = entity.Name,
             Price = entity.Price,
-            Weight = entity.Weight
+            Volume = entity.Volume
         };
     }
 
@@ -27,7 +27,7 @@ public class ProductMapper : IMapper<Product, ProductDto>
             Id = dto.Id,
             Name = dto.Name,
             Price = dto.Price,
-            Weight = dto.Weight
+            Volume = dto.Volume
         };
     }
 

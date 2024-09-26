@@ -1,27 +1,37 @@
 [
     {
         "Type": "truck",
-        "Capacity": 15000.00,
+        "Capacity": 7000.00,
+        "UsedCapacity": 1000.00,
+        "NotUsedCapacity": 6000.00,
         "IsAvailable": true
     },
     {
         "Type": "van",
         "Capacity": 5000.00,
+        "UsedCapacity": 5000.00,
+        "NotUsedCapacity": 0.00,
         "IsAvailable": false
     },
     {
         "Type": "truck",
-        "Capacity": 30000.00,
+        "Capacity": 7000.00,
+        "UsedCapacity": 1000.00,
+        "NotUsedCapacity": 6000.00,
         "IsAvailable": true
     },
     {
         "Type": "van",
-        "Capacity": 2000.00,
+        "Capacity": 5000.00,
+        "UsedCapacity": 1000.00,
+        "NotUsedCapacity": 4000.00,
         "IsAvailable": true
     },
     {
         "Type": "van",
-        "Capacity": 12000.00,
+        "Capacity": 7000.00,
+        "UsedCapacity": 7000.00,
+        "NotUsedCapacity": 0.00,
         "IsAvailable": false
     }
 ]

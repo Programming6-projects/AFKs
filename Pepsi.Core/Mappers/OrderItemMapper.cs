@@ -18,7 +18,6 @@ public class OrderItemMapper(IMapper<Product, ProductDto> productMapper) : IMapp
             ProductId = entity.ProductId,
             Product = entity.Product != null ? productMapper.MapToDto(entity.Product) : null,
             Quantity = entity.Quantity,
-            UnitPrice = entity.UnitPrice
         };
     }
 
@@ -31,7 +30,6 @@ public class OrderItemMapper(IMapper<Product, ProductDto> productMapper) : IMapp
             OrderId = dto.OrderId,
             ProductId = dto.ProductId,
             Quantity = dto.Quantity,
-            UnitPrice = dto.UnitPrice
         };
     }
 
