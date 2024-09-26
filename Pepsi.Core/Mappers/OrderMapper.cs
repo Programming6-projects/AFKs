@@ -43,7 +43,7 @@ public class OrderMapper(
             TotalPrice = entity.TotalPrice,
             OrderDate = entity.OrderDate,
             DeliveryDate = entity.DeliveryDate,
-            Status = entity.Status
+            Status = entity.Status.ToString()
         };
     }
 
@@ -78,7 +78,7 @@ public class OrderMapper(
             TotalPrice = dto.TotalPrice,
             OrderDate = dto.OrderDate,
             DeliveryDate = dto.DeliveryDate,
-            Status = dto.Status
+            Status = (OrderStatus)Enum.Parse(typeof(OrderStatus), dto.Status)
         };
     }
 
@@ -102,8 +102,6 @@ public class OrderMapper(
 
     public Task<Order> MapFromCreateToEntity(CompleteOrderDto dto)
     {
-        // For CompleteOrderDto, we can use the synchronous MapToEntity method
-        // as all required information is already present in the DTO
         return Task.FromResult(MapToEntity(dto));
     }
 
