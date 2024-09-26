@@ -49,8 +49,18 @@ public class OrderService(
     public async Task<int> AddAsync(OrderDto dto)
     {
         var order = createOrderMapper.MapFromCreateToEntity(dto);
-        return await orderRepository.AddAsync(await order.ConfigureAwait(false)).ConfigureAwait(false);
+        var orderId = await orderRepository.AddAsync(await order.ConfigureAwait(false)).ConfigureAwait(false);
+        var items = dto.Items;
+
+        foreach (var orderItemDto in items)
+        {
+            orderItemDto.OrderId = orderId;
+            await orderItemService.AddAsync(orderItemDto).ConfigureAwait(false);
+        }
+        return orderId;
     }
+
+
 
     public Task UpdateAsync(OrderDto dto)
     {
